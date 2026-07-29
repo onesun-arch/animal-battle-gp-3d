@@ -63,6 +63,7 @@ const animalIcon=a=>`<img class="inline-sprite" src="${a[1]}" alt="" aria-hidden
 const $=x=>document.getElementById(x),uid=()=>crypto.randomUUID(),esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 let room=null,roomCode="",myId=uid(),host=false,state=null,actions={},timer=null,lastFrame=0,seenResult=0,lastStateVersion=0,currentRaceId="";
 const config={appId:"animal-battle-gp-public-v3"};
+const PUBLIC_GAME_URL="https://onesun-arch.github.io/animal-battle-gp-3d/";
 const invitedCode=new URLSearchParams(location.search).get("room")||"";
 const GL={renderer:null,scene:null,camera:null,racers:[],targets:[],ready:false};
 
@@ -179,7 +180,7 @@ async function copyText(text,message){
  catch{prompt("아래 내용을 복사하세요.",text)}
 }
 async function shareRoom(){
- const url=new URL(location.href);url.search="";url.searchParams.set("room",roomCode);
+ const url=new URL(PUBLIC_GAME_URL);url.searchParams.set("room",roomCode);
  const data={title:"애니멀 배틀 GP 초대",text:`${roomCode}번 방에서 같이 경기해요!`,url:url.href};
  try{if(navigator.share){await navigator.share(data)}else await copyText(url.href,"초대 링크가 복사되었습니다.")}
  catch(e){if(e?.name!=="AbortError")await copyText(url.href,"초대 링크가 복사되었습니다.")}

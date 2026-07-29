@@ -48,6 +48,7 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /alphaTest:\.025/);
   assert.match(game, /joinRoom/);
   assert.match(game, /shareRoom/);
+  assert.match(game, /https:\/\/onesun-arch\.github\.io\/animal-battle-gp-3d\//);
   assert.match(game, /id="allin"/);
   assert.match(game, /id="loan"/);
   assert.match(game, /p\.coins<=0/);
