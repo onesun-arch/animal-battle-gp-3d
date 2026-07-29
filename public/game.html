@@ -13,7 +13,7 @@ h1,h2,h3{margin-top:0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;m
 .top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;margin-bottom:10px}.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{padding:8px 10px;background:#fff;border:1px solid #d8e6ee;border-radius:11px;font-weight:900}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:11px}.racebox{padding:11px}.arena{height:690px;position:relative;overflow:hidden;border-radius:18px;background:#315c2d url("./assets/amazon-race-arena.png") center/cover no-repeat;box-shadow:inset 0 0 55px #1f120466,0 20px 55px #07130b55}.arena canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.arena:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 58%,#120a0338);box-shadow:inset 0 0 90px #07130b99;z-index:1}
 .track{display:none}
-.center{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);width:42%;height:31%;display:grid;place-items:center;text-align:center;color:#fff;text-shadow:0 2px 8px #154d23;z-index:3;pointer-events:none}.comment{background:#123c2ccc;padding:9px;border-radius:11px;font-weight:900;font-size:13px}
+.center{position:absolute;left:50%;top:17%;transform:translate(-50%,-50%);width:min(72%,620px);display:grid;place-items:center;text-align:center;color:#fff;text-shadow:0 3px 12px #071b0d;z-index:3;pointer-events:none}.center h2{letter-spacing:.22em;margin-bottom:8px}.comment{background:#123c2cdd;padding:9px 14px;border:1px solid #ffffff38;border-radius:999px;font-weight:900;font-size:13px;box-shadow:0 8px 22px #0005}
 .lap{position:absolute;right:14px;top:14px;background:#10241ee8;color:#fff;padding:9px 12px;border-radius:12px;font-weight:1000;z-index:5}.racer{position:absolute;width:78px;height:78px;padding:4px;border-radius:50%;background:linear-gradient(145deg,#fff,#d9c295);border:3px solid var(--c);display:grid;place-items:center;transform:translate(-50%,-50%);transition:left .12s linear,top .12s linear;box-shadow:0 8px 18px #0008;z-index:4}.racer img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}.racer.lead{box-shadow:0 0 0 5px #ffd45c,0 9px 25px #0008;animation:pulse .45s ease-in-out infinite alternate}.racer.sprint{animation:shake .12s linear infinite}@keyframes pulse{to{transform:translate(-50%,-50%) scale(1.12)}}@keyframes shake{50%{margin-left:4px}}
 .side{padding:13px}.code{font-size:28px;letter-spacing:5px;font-weight:1000;color:#1e7b4b}.room-actions{display:flex;gap:6px;margin:8px 0 2px}.room-actions .btn{flex:1;padding:9px;font-size:13px}.players{display:grid;gap:6px;margin:10px 0}.player{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:8px;background:#fff;border:1px solid #d8e6ee;border-radius:12px;padding:8px}.player.me{border:2px solid #2b8a57}.player.eliminated{opacity:.55;background:#ececec;border-color:#aaa}.ready{color:#16924e;font-weight:900}.wait{color:#d57f15;font-weight:900}.out{color:#a52828;font-weight:1000}.predict{background:#fff;border:1px solid #d8e6ee;border-radius:14px;padding:10px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.grid select,.predict input{width:100%;padding:9px 5px;border:1px solid #c9dbe6;border-radius:9px}.money-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.money-actions .btn{padding:9px;font-size:13px}.loan-note{font-size:11px;opacity:.68;margin-top:5px}.actions{display:grid;gap:7px;margin-top:9px}.status{margin-top:9px;padding:9px;border-radius:11px;background:#173c2c;color:#fff;font-size:13px;line-height:1.45}.board{margin-top:10px}.rank{display:grid;grid-template-columns:25px 1fr auto;gap:6px;background:#fff;margin-top:4px;padding:7px;border-radius:10px}.bar{height:6px;background:#e5eef3;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#2e9b5c,#d18b2e)}.inline-sprite{width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:4px;border:2px solid #fff;box-shadow:0 2px 7px #0003}
 .overlay{position:fixed;inset:0;background:#071522e9;display:none;align-items:center;justify-content:center;padding:14px;z-index:999}.overlay.show{display:flex}.result{background:#fff;border-radius:20px;padding:18px;width:min(860px,96vw);max-height:92vh;overflow:auto}.result table{width:100%;border-collapse:collapse}.result th,.result td{padding:8px;border-bottom:1px solid #e1e9ee;text-align:center;font-size:13px}.win{background:#fff6cf}.last{background:#ffe1df}.penalty{background:#fff0ef;border-radius:11px;padding:10px;margin-top:10px;font-weight:900;color:#8b2723}
@@ -65,7 +65,7 @@ let room=null,roomCode="",myId=uid(),host=false,state=null,actions={},timer=null
 const config={appId:"animal-battle-gp-public-v3"};
 const PUBLIC_GAME_URL="https://onesun-arch.github.io/animal-battle-gp-3d/";
 const invitedCode=new URLSearchParams(location.search).get("room")||"";
-const GL={renderer:null,scene:null,camera:null,racers:[],targets:[],ready:false};
+const GL={renderer:null,scene:null,camera:null,racers:[],targets:[],targetRotations:[],ready:false};
 
 function ellipseRing(outerX,outerY,innerX,innerY){
  const shape=new THREE.Shape();
@@ -86,11 +86,11 @@ async function init3D(){
    const canvas=$("glCanvas"),arena=$("arena");
    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:"high-performance"});
    renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
-   const scene=new THREE.Scene();scene.background=new THREE.Color(0x55745a);scene.fog=new THREE.Fog(0x55745a,20,43);
-   const camera=new THREE.PerspectiveCamera(56,1,.1,70);camera.position.set(0,2.15,13.2);camera.lookAt(0,.8,-5.5);
-   scene.add(new THREE.HemisphereLight(0xe8f5dc,0x243718,2.4));
-   const sun=new THREE.DirectionalLight(0xffd38a,4.2);sun.position.set(-9,14,7);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
+   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.16;
+   const scene=new THREE.Scene();scene.background=new THREE.Color(0x55745a);scene.fog=new THREE.Fog(0x55745a,18,40);
+   const camera=new THREE.PerspectiveCamera(58,1,.1,70);camera.position.set(9,5.4,11.5);camera.lookAt(0,.65,2.8);
+   scene.add(new THREE.HemisphereLight(0xe8f5dc,0x243718,2.5));
+   const sun=new THREE.DirectionalLight(0xffd38a,4.4);sun.position.set(-9,14,7);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
    const loader=new THREE.TextureLoader();
    const [jungle,grass,dirt,...animals]=await Promise.all([
      loader.loadAsync("./assets/amazon-race-arena.png"),
@@ -100,39 +100,54 @@ async function init3D(){
    ]);
    [jungle,grass,dirt,...animals].forEach(t=>t.colorSpace=THREE.SRGBColorSpace);
    scene.background=jungle;scene.backgroundBlurriness=.08;scene.fog.color.set(0x55745a);
-   grass.wrapS=grass.wrapT=THREE.RepeatWrapping;grass.repeat.set(7,12);
-   dirt.wrapS=dirt.wrapT=THREE.RepeatWrapping;dirt.repeat.set(4,12);
-   const ground=new THREE.Mesh(new THREE.PlaneGeometry(32,46),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x6b9345}));
-   ground.rotation.x=-Math.PI/2;ground.position.z=-6;ground.receiveShadow=true;scene.add(ground);
-   const track=new THREE.Mesh(new THREE.PlaneGeometry(13.4,38),new THREE.MeshStandardMaterial({map:dirt,roughness:.94,color:0xc57b3d}));
-   track.rotation.x=-Math.PI/2;track.position.set(0,.035,-5);track.receiveShadow=true;scene.add(track);
-   const curbMaterial=new THREE.MeshStandardMaterial({color:0xe2c06c,roughness:.75});
-   [-6.85,6.85].forEach(x=>{const curb=new THREE.Mesh(new THREE.BoxGeometry(.32,.15,38),curbMaterial);curb.position.set(x,.1,-5);curb.castShadow=true;curb.receiveShadow=true;scene.add(curb)});
-   const laneMaterial=new THREE.MeshStandardMaterial({color:0xffefb0,roughness:.7,transparent:true,opacity:.74});
-   [-4.55,-2.28,0,2.28,4.55].forEach(x=>{for(let z=10;z>-24;z-=3.2){const line=new THREE.Mesh(new THREE.BoxGeometry(.055,.025,1.65),laneMaterial);line.position.set(x,.075,z);scene.add(line)}});
+   grass.wrapS=grass.wrapT=THREE.RepeatWrapping;grass.repeat.set(7,5);
+   dirt.wrapS=dirt.wrapT=THREE.RepeatWrapping;dirt.repeat.set(5,3);
+   const ground=new THREE.Mesh(new THREE.PlaneGeometry(27,19),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x678e44}));
+   ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+   const track=new THREE.Mesh(ellipseRing(8.6,5.25,3.65,1.75),new THREE.MeshStandardMaterial({map:dirt,roughness:.94,color:0xc47a3d}));
+   track.rotation.x=-Math.PI/2;track.position.y=.045;track.receiveShadow=true;scene.add(track);
+   const curbMaterial=new THREE.MeshStandardMaterial({color:0xf1ca5b,roughness:.7});
+   const outerCurb=new THREE.Mesh(ellipseRing(8.85,5.5,8.52,5.17),curbMaterial);
+   const innerCurb=new THREE.Mesh(ellipseRing(3.93,2.03,3.57,1.67),curbMaterial);
+   [outerCurb,innerCurb].forEach(m=>{m.rotation.x=-Math.PI/2;m.position.y=.075;m.castShadow=true;m.receiveShadow=true;scene.add(m)});
+   scene.add(ellipseLine(6.1,3.5,0xffefad,.72));
+   const infield=new THREE.Mesh(new THREE.CircleGeometry(1,96),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x4f873d}));
+   infield.rotation.x=-Math.PI/2;infield.scale.set(3.55,1.66,1);infield.position.y=.06;infield.receiveShadow=true;scene.add(infield);
    const trunkGeometry=new THREE.CylinderGeometry(.28,.48,3.8,10);
    const trunkMaterial=new THREE.MeshStandardMaterial({color:0x5b371e,roughness:1});
    const leafGeometry=new THREE.IcosahedronGeometry(1.35,1);
    const leafMaterial=new THREE.MeshStandardMaterial({color:0x145f35,roughness:.9});
-   [[-8.6,8,1.25],[8.6,8,1.25],[-8.8,0,1.45],[8.8,0,1.45],[-9,-10,1.65],[9,-10,1.65],[-8.7,-20,1.8],[8.7,-20,1.8]].forEach(([x,z,s],i)=>{
+   [[-10.8,6,1.35],[10.8,6,1.35],[-11.5,0,1.55],[11.5,0,1.55],[-10.6,-6,1.45],[10.6,-6,1.45],[-2.8,0,1.05],[2.8,0,1.05]].forEach(([x,z,s],i)=>{
      const trunk=new THREE.Mesh(trunkGeometry,trunkMaterial);trunk.position.set(x,1.9*s,z);trunk.scale.setScalar(s);trunk.castShadow=true;scene.add(trunk);
      for(let n=0;n<3;n++){const leaf=new THREE.Mesh(leafGeometry,leafMaterial);leaf.position.set(x+(n-1)*.9*s,4.4*s+Math.abs(n-1)*.25,z+(i%2?.35:-.35));leaf.scale.set(1.25*s,.78*s,1.1*s);leaf.castShadow=true;scene.add(leaf)}
    });
    const archMaterial=new THREE.MeshStandardMaterial({color:0x68411f,roughness:.82});
-   [-7.2,7.2].forEach(x=>{const pillar=new THREE.Mesh(new THREE.CylinderGeometry(.28,.4,6.2,10),archMaterial);pillar.position.set(x,3.1,-10);pillar.castShadow=true;scene.add(pillar)});
-   const arch=new THREE.Mesh(new THREE.BoxGeometry(15,.55,.6),archMaterial);arch.position.set(0,6,-10);arch.castShadow=true;scene.add(arch);
+   [1.3,5.7].forEach(z=>{const pillar=new THREE.Mesh(new THREE.CylinderGeometry(.25,.38,4.8,10),archMaterial);pillar.position.set(0,2.4,z);pillar.castShadow=true;scene.add(pillar)});
+   const arch=new THREE.Mesh(new THREE.BoxGeometry(.55,.48,4.8),archMaterial);arch.position.set(0,4.7,3.5);arch.castShadow=true;scene.add(arch);
    animals.forEach((texture,i)=>{
+     const kart=new THREE.Group(),bodyMaterial=new THREE.MeshStandardMaterial({color:new THREE.Color(A[i][2]),metalness:.18,roughness:.42});
+     const body=new THREE.Mesh(new THREE.BoxGeometry(1.35,.34,1.65),bodyMaterial);body.position.y=.38;body.castShadow=true;kart.add(body);
+     const nose=new THREE.Mesh(new THREE.BoxGeometry(1.05,.28,.65),bodyMaterial);nose.position.set(0,.43,.83);nose.castShadow=true;kart.add(nose);
+     const seat=new THREE.Mesh(new THREE.BoxGeometry(.68,.72,.34),new THREE.MeshStandardMaterial({color:0x1b2421,roughness:.75}));seat.position.set(0,.78,-.32);seat.rotation.x=-.18;kart.add(seat);
+     const wheelMaterial=new THREE.MeshStandardMaterial({color:0x101312,roughness:.9}),wheels=[];
+     [[-.72,.25,.52],[.72,.25,.52],[-.72,.25,-.53],[.72,.25,-.53]].forEach(([x,y,z])=>{const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.22,14),wheelMaterial);wheel.position.set(x,y,z);wheel.rotation.z=Math.PI/2;wheel.castShadow=true;kart.add(wheel);wheels.push(wheel)});
+     const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.52,.12,.16),new THREE.MeshStandardMaterial({color:0xf3e6bc,metalness:.35,roughness:.4}));bumper.position.set(0,.28,1.14);kart.add(bumper);
      const material=new THREE.SpriteMaterial({map:texture,transparent:true,alphaTest:.025,depthWrite:false});
-     const sprite=new THREE.Sprite(material);sprite.scale.set(1.35,1.35,1);sprite.visible=false;sprite.renderOrder=4;scene.add(sprite);
-     GL.racers[i]=sprite;GL.targets[i]=new THREE.Vector3()
+     const rider=new THREE.Sprite(material);rider.position.set(0,1.42,-.18);rider.scale.set(1.18,1.18,1);rider.renderOrder=5;kart.add(rider);
+     kart.userData.wheels=wheels;kart.visible=false;kart.renderOrder=4;scene.add(kart);
+     GL.racers[i]=kart;GL.targets[i]=new THREE.Vector3();GL.targetRotations[i]=0
    });
    GL.renderer=renderer;GL.scene=scene;GL.camera=camera;GL.ready=true;
    if(state?.race)renderRace(state.race);else showStartingGrid();
-   const resize=()=>{const w=Math.max(1,arena.clientWidth),h=Math.max(1,arena.clientHeight),portrait=w/h<.95;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=portrait?68:56;camera.position.z=portrait?17.5:13.2;camera.updateProjectionMatrix()};
+   const resize=()=>{const w=Math.max(1,arena.clientWidth),h=Math.max(1,arena.clientHeight),portrait=w/h<.95;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=portrait?72:58;camera.updateProjectionMatrix()};
    new ResizeObserver(resize).observe(arena);resize();
    renderer.setAnimationLoop(time=>{
-     GL.racers.forEach((sprite,i)=>{if(!sprite.visible)return;sprite.position.lerp(GL.targets[i],.2);sprite.position.y=GL.targets[i].y+Math.sin(time*.009+i)*.035});
-     camera.position.x=Math.sin(time*.00035)*.12;camera.lookAt(0,.82,-5.5);
+     GL.racers.forEach((kart,i)=>{if(!kart.visible)return;kart.position.lerp(GL.targets[i],.2);kart.position.y=GL.targets[i].y+Math.sin(time*.012+i)*.025;const delta=Math.atan2(Math.sin(GL.targetRotations[i]-kart.rotation.y),Math.cos(GL.targetRotations[i]-kart.rotation.y));kart.rotation.y+=delta*.18;kart.userData.wheels?.forEach(w=>w.rotation.x-=.22)});
+     if(state?.running&&state.race){
+       const leaderIndex=state.race.order?.[0]??0,leader=GL.racers[leaderIndex],target=GL.targets[leaderIndex],angle=GL.targetRotations[leaderIndex],dx=Math.sin(angle),dz=Math.cos(angle);
+       const desired=new THREE.Vector3(target.x-dx*5.8,4.5,target.z-dz*5.8);camera.position.lerp(desired,.065);
+       const visible=GL.racers.filter(k=>k.visible),focus=visible.reduce((v,k)=>v.add(k.position),new THREE.Vector3()).multiplyScalar(1/Math.max(1,visible.length));camera.lookAt(focus.x,.78,focus.z)
+     }else{camera.position.lerp(new THREE.Vector3(9,5.4,11.5),.055);camera.lookAt(0,.7,2.8)}
      renderer.render(scene,camera)
    });
  }catch(error){
@@ -141,12 +156,13 @@ async function init3D(){
 }
 function setRacer3D(i,v,l,isLead){
  if(!GL.ready)return;
- const phase=(v*4)%1,lane=(l-2.5)*2.05;
- const target=GL.targets[i];target.set(lane,.9,5.7-phase*14.3);
- const sprite=GL.racers[i];if(!sprite.visible){sprite.position.copy(target);sprite.visible=true}
- sprite.scale.setScalar(isLead?1.62:1.45)
+ const laneOffset=(l-2.5)*.48,rx=6.1+laneOffset,rz=3.5+laneOffset*.55,t=v*8*Math.PI+Math.PI/2;
+ const target=GL.targets[i];target.set(Math.cos(t)*rx,.16,Math.sin(t)*rz);
+ const dx=-Math.sin(t)*rx,dz=Math.cos(t)*rz;GL.targetRotations[i]=Math.atan2(dx,dz);
+ const kart=GL.racers[i];if(!kart.visible){kart.position.copy(target);kart.rotation.y=GL.targetRotations[i];kart.visible=true}
+ kart.scale.setScalar(isLead?1.08:1)
 }
-function showStartingGrid(){if(!GL.ready)return;GL.racers.forEach((sprite,i)=>{GL.targets[i].set((i-2.5)*2.05,.9,5.5+(i%2)*.18);sprite.position.copy(GL.targets[i]);sprite.scale.setScalar(1.48);sprite.visible=true})}
+function showStartingGrid(){if(!GL.ready)return;GL.racers.forEach((kart,i)=>{const row=Math.floor(i/2),side=i%2;GL.targets[i].set(2.15-row*1.65,.16,2.45+side*1.45);GL.targetRotations[i]=-Math.PI/2;kart.position.copy(GL.targets[i]);kart.rotation.y=GL.targetRotations[i];kart.scale.setScalar(1);kart.visible=true})}
 function clear3DRacers(){GL.racers.forEach(r=>r.visible=false)}
 init3D();
 

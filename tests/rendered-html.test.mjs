@@ -39,9 +39,12 @@ test("ships the WebGL game and local textures", async () => {
   const game = await readFile(new URL("../public/game.html", import.meta.url), "utf8");
   assert.match(game, /new THREE\.WebGLRenderer/);
   assert.match(game, /powerPreference:"high-performance"/);
-  assert.match(game, /new THREE\.PerspectiveCamera\(56/);
+  assert.match(game, /new THREE\.PerspectiveCamera\(58/);
   assert.match(game, /function showStartingGrid/);
   assert.match(game, /6마리 모두 출발선/);
+  assert.match(game, /const kart=new THREE\.Group/);
+  assert.match(game, /targetRotations/);
+  assert.match(game, /t=v\*8\*Math\.PI/);
   assert.match(game, /grass-tile\.jpg/);
   assert.match(game, /dirt-tile\.jpg/);
   assert.match(game, /amazon-race-arena\.png/);
