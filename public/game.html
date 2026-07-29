@@ -32,9 +32,9 @@ h1,h2,h3{margin-top:0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;m
 </section>
 
 <div id="game" class="hidden">
-<header class="panel top"><div><h2>⚔️ 애니멀 배틀 GP</h2><small>온라인 P2P · 최대 6명</small></div><div class="badges"><div class="badge">방 <span id="topCode">----</span></div><div class="badge">경기 <span id="round">1</span>/10</div><div class="badge">LAP <span id="topLap">0</span>/4</div></div></header>
+<header class="panel top"><div><h2>⚔️ 애니멀 배틀 GP</h2><small>온라인 P2P · 최대 6명 · 1,800m 원랩</small></div><div class="badges"><div class="badge">방 <span id="topCode">----</span></div><div class="badge">경기 <span id="round">1</span>/10</div><div class="badge">LAP <span id="topLap">0</span>/1</div></div></header>
 <main class="layout">
-<section class="panel racebox"><div id="arena" class="arena"><canvas id="glCanvas" aria-label="3D 동물 레이싱 경기장"></canvas><div class="track"></div><div class="center"><div><h2>BATTLE GP</h2><div id="comment" class="comment">참가자를 기다리는 중</div></div></div><div id="lap" class="lap">LAP 0 / 4</div></div></section>
+<section class="panel racebox"><div id="arena" class="arena"><canvas id="glCanvas" aria-label="3D 동물 레이싱 경기장"></canvas><div class="track"></div><div class="center"><div><h2>AMAZON GRAND LOOP</h2><div id="comment" class="comment">참가자를 기다리는 중</div></div></div><div id="lap" class="lap">LAP 0 / 1</div></div></section>
 <aside class="panel side">
 <div style="display:flex;justify-content:space-between;align-items:center"><div><b>방 코드</b><div id="code" class="code">0000</div></div><button id="leave" class="btn secondary">나가기</button></div>
 <div class="room-actions"><button id="share" class="btn primary">초대 링크 공유</button><button id="copyCode" class="btn secondary">코드 복사</button></div>
@@ -102,28 +102,34 @@ async function init3D(){
    scene.background=jungle;scene.backgroundBlurriness=.08;scene.fog.color.set(0x55745a);
    grass.wrapS=grass.wrapT=THREE.RepeatWrapping;grass.repeat.set(7,5);
    dirt.wrapS=dirt.wrapT=THREE.RepeatWrapping;dirt.repeat.set(5,3);
-   const ground=new THREE.Mesh(new THREE.PlaneGeometry(27,19),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x678e44}));
+   const ground=new THREE.Mesh(new THREE.PlaneGeometry(38,25),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x678e44}));
    ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
-   const track=new THREE.Mesh(ellipseRing(8.6,5.25,3.65,1.75),new THREE.MeshStandardMaterial({map:dirt,roughness:.94,color:0xc47a3d}));
+   const track=new THREE.Mesh(ellipseRing(12.8,7.2,6.3,2.65),new THREE.MeshStandardMaterial({map:dirt,roughness:.94,color:0xc47a3d}));
    track.rotation.x=-Math.PI/2;track.position.y=.045;track.receiveShadow=true;scene.add(track);
    const curbMaterial=new THREE.MeshStandardMaterial({color:0xf1ca5b,roughness:.7});
-   const outerCurb=new THREE.Mesh(ellipseRing(8.85,5.5,8.52,5.17),curbMaterial);
-   const innerCurb=new THREE.Mesh(ellipseRing(3.93,2.03,3.57,1.67),curbMaterial);
+   const outerCurb=new THREE.Mesh(ellipseRing(13.08,7.48,12.72,7.12),curbMaterial);
+   const innerCurb=new THREE.Mesh(ellipseRing(6.62,2.97,6.2,2.55),curbMaterial);
    [outerCurb,innerCurb].forEach(m=>{m.rotation.x=-Math.PI/2;m.position.y=.075;m.castShadow=true;m.receiveShadow=true;scene.add(m)});
-   scene.add(ellipseLine(6.1,3.5,0xffefad,.72));
+   scene.add(ellipseLine(9.55,4.9,0xffefad,.72));
    const infield=new THREE.Mesh(new THREE.CircleGeometry(1,96),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x4f873d}));
-   infield.rotation.x=-Math.PI/2;infield.scale.set(3.55,1.66,1);infield.position.y=.06;infield.receiveShadow=true;scene.add(infield);
+   infield.rotation.x=-Math.PI/2;infield.scale.set(6.15,2.5,1);infield.position.y=.06;infield.receiveShadow=true;scene.add(infield);
+   const river=new THREE.Mesh(new THREE.PlaneGeometry(9.8,1.15),new THREE.MeshStandardMaterial({color:0x258cb4,metalness:.25,roughness:.18,transparent:true,opacity:.88}));
+   river.rotation.x=-Math.PI/2;river.position.set(0,.085,0);scene.add(river);
+   const boostMaterial=new THREE.MeshStandardMaterial({color:0x27e4cf,emissive:0x087c72,emissiveIntensity:1.7,metalness:.25,roughness:.3});
+   [0,.68*Math.PI,1.36*Math.PI].forEach(t=>{const rx=9.55,rz=4.9,x=Math.cos(t)*rx,z=Math.sin(t)*rz,dx=-Math.sin(t)*rx,dz=Math.cos(t)*rz,pad=new THREE.Mesh(new THREE.BoxGeometry(1.5,.045,2.15),boostMaterial);pad.position.set(x,.11,z);pad.rotation.y=Math.atan2(dx,dz);scene.add(pad)});
    const trunkGeometry=new THREE.CylinderGeometry(.28,.48,3.8,10);
    const trunkMaterial=new THREE.MeshStandardMaterial({color:0x5b371e,roughness:1});
    const leafGeometry=new THREE.IcosahedronGeometry(1.35,1);
    const leafMaterial=new THREE.MeshStandardMaterial({color:0x145f35,roughness:.9});
-   [[-10.8,6,1.35],[10.8,6,1.35],[-11.5,0,1.55],[11.5,0,1.55],[-10.6,-6,1.45],[10.6,-6,1.45],[-2.8,0,1.05],[2.8,0,1.05]].forEach(([x,z,s],i)=>{
+   [[-15.5,7,1.45],[15.5,7,1.45],[-16,0,1.7],[16,0,1.7],[-15,-7,1.55],[15,-7,1.55],[-4.5,1.7,1.05],[4.5,-1.7,1.05]].forEach(([x,z,s],i)=>{
      const trunk=new THREE.Mesh(trunkGeometry,trunkMaterial);trunk.position.set(x,1.9*s,z);trunk.scale.setScalar(s);trunk.castShadow=true;scene.add(trunk);
      for(let n=0;n<3;n++){const leaf=new THREE.Mesh(leafGeometry,leafMaterial);leaf.position.set(x+(n-1)*.9*s,4.4*s+Math.abs(n-1)*.25,z+(i%2?.35:-.35));leaf.scale.set(1.25*s,.78*s,1.1*s);leaf.castShadow=true;scene.add(leaf)}
    });
+   const rockMaterial=new THREE.MeshStandardMaterial({color:0x57625a,roughness:.96});
+   [[-14,3,.8],[14,-3,1],[-9.5,-8,.75],[9.5,8,.9],[-4.8,-1.8,.55],[4.9,1.7,.6]].forEach(([x,z,s])=>{const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),rockMaterial);rock.position.set(x,s*.55,z);rock.scale.y=.7;rock.rotation.set(.2,x*.1,.12);rock.castShadow=true;scene.add(rock)});
    const archMaterial=new THREE.MeshStandardMaterial({color:0x68411f,roughness:.82});
-   [1.3,5.7].forEach(z=>{const pillar=new THREE.Mesh(new THREE.CylinderGeometry(.25,.38,4.8,10),archMaterial);pillar.position.set(0,2.4,z);pillar.castShadow=true;scene.add(pillar)});
-   const arch=new THREE.Mesh(new THREE.BoxGeometry(.55,.48,4.8),archMaterial);arch.position.set(0,4.7,3.5);arch.castShadow=true;scene.add(arch);
+   [2.7,7.2].forEach(z=>{const pillar=new THREE.Mesh(new THREE.CylinderGeometry(.25,.38,4.8,10),archMaterial);pillar.position.set(0,2.4,z);pillar.castShadow=true;scene.add(pillar)});
+   const arch=new THREE.Mesh(new THREE.BoxGeometry(.55,.48,5),archMaterial);arch.position.set(0,4.7,4.95);arch.castShadow=true;scene.add(arch);
    animals.forEach((texture,i)=>{
      const kart=new THREE.Group(),bodyMaterial=new THREE.MeshStandardMaterial({color:new THREE.Color(A[i][2]),metalness:.18,roughness:.42});
      const body=new THREE.Mesh(new THREE.BoxGeometry(1.35,.34,1.65),bodyMaterial);body.position.y=.38;body.castShadow=true;kart.add(body);
@@ -156,13 +162,13 @@ async function init3D(){
 }
 function setRacer3D(i,v,l,isLead){
  if(!GL.ready)return;
- const laneOffset=(l-2.5)*.48,rx=6.1+laneOffset,rz=3.5+laneOffset*.55,t=v*8*Math.PI+Math.PI/2;
+ const laneOffset=(l-2.5)*.55,rx=9.55+laneOffset,rz=4.9+laneOffset*.34,t=v*2*Math.PI+Math.PI/2;
  const target=GL.targets[i];target.set(Math.cos(t)*rx,.16,Math.sin(t)*rz);
  const dx=-Math.sin(t)*rx,dz=Math.cos(t)*rz;GL.targetRotations[i]=Math.atan2(dx,dz);
  const kart=GL.racers[i];if(!kart.visible){kart.position.copy(target);kart.rotation.y=GL.targetRotations[i];kart.visible=true}
  kart.scale.setScalar(isLead?1.08:1)
 }
-function showStartingGrid(){if(!GL.ready)return;GL.racers.forEach((kart,i)=>{const row=Math.floor(i/2),side=i%2;GL.targets[i].set(2.15-row*1.65,.16,2.45+side*1.45);GL.targetRotations[i]=-Math.PI/2;kart.position.copy(GL.targets[i]);kart.rotation.y=GL.targetRotations[i];kart.scale.setScalar(1);kart.visible=true})}
+function showStartingGrid(){if(!GL.ready)return;GL.racers.forEach((kart,i)=>{const row=Math.floor(i/2),side=i%2;GL.targets[i].set(2.15-row*1.65,.16,3.2+side*1.9);GL.targetRotations[i]=-Math.PI/2;kart.position.copy(GL.targets[i]);kart.rotation.y=GL.targetRotations[i];kart.scale.setScalar(1);kart.visible=true})}
 function clear3DRacers(){GL.racers.forEach(r=>r.visible=false)}
 init3D();
 
@@ -310,7 +316,7 @@ function startRace(){
  active.forEach(p=>p.coins-=p.bet);
  state.running=true;state.result=null;
  currentRaceId=`${state.round}-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
- state.race={raceId:currentRaceId,round:state.round,start:Date.now(),duration:18000,lap:1,progress:A.map((_,i)=>({i,v:0,seed:Math.random()*20})),order:[0,1,2,3,4,5]};
+ state.race={raceId:currentRaceId,round:state.round,start:Date.now(),duration:45000,lap:1,progress:A.map((_,i)=>({i,v:0,seed:Math.random()*20})),order:[0,1,2,3,4,5]};
  sendState();clearInterval(timer);
  timer=setInterval(tick,80)
 }
@@ -322,7 +328,7 @@ function tick(){
    const catchup=(5-r.order.indexOf(i))*.002*(1-t);
    x.v=Math.max(x.v,Math.min(1,t+wave+sprint+catchup));
  });
- r.order=[...r.progress].sort((a,b)=>b.v-a.v).map(x=>x.i);r.lap=Math.min(4,Math.floor(Math.max(...r.progress.map(x=>x.v))*4)+1);
+ r.order=[...r.progress].sort((a,b)=>b.v-a.v).map(x=>x.i);r.lap=1;
  renderRace(r);
  if(Date.now()-lastFrame>140){lastFrame=Date.now();actions.frame.send(r)}
  if(t>=1){clearInterval(timer);finishRace()}
@@ -358,14 +364,15 @@ function resetInputs(){
  const available=Math.max(0,Math.floor(me()?.coins||0));
  $("bet").max=available;$("bet").value=Math.min(50,available)
 }
-function resetTrack(){showStartingGrid();$("board").innerHTML="";$("lap").textContent="LAP 0 / 4";$("topLap").textContent="0";$("comment").textContent="6마리 모두 출발선에서 다음 경기를 기다리는 중"}
-function pos(v,l){const t=v*8*Math.PI-Math.PI/2;return{x:50+Math.cos(t)*(39-l*.65),y:50+Math.sin(t)*(39-l*.5)}}
+function resetTrack(){showStartingGrid();$("board").innerHTML="";$("lap").textContent="LAP 0 / 1";$("topLap").textContent="0";$("comment").textContent="6마리 모두 1,800m 정글 원랩 출발을 기다리는 중"}
+function pos(v,l){const t=v*2*Math.PI+Math.PI/2;return{x:50+Math.cos(t)*(39-l*.65),y:50+Math.sin(t)*(39-l*.5)}}
 function renderRace(r){
- $("lap").textContent=`LAP ${r.lap||0} / 4`;$("topLap").textContent=r.lap||0;
+ $("lap").textContent=`LAP ${r.lap||0} / 1`;$("topLap").textContent=r.lap||0;
  A.forEach((a,i)=>{const x=r.progress.find(q=>q.i===i);setRacer3D(i,x?.v||0,i,r.order[0]===i)});
  const lead=A[r.order[0]],sec=A[r.order[1]],g=((r.progress.find(x=>x.i===r.order[0]).v-r.progress.find(x=>x.i===r.order[1]).v)*100).toFixed(1);
- $("comment").innerHTML=r.lap===4?`🔥 마지막 바퀴! ${animalIcon(lead)} ${lead[0]} 선두`:`${animalIcon(lead)} ${lead[0]} 선두 · ${animalIcon(sec)} ${sec[0]} 추격 · 격차 ${g}%`;
- $("board").innerHTML=r.order.map((i,k)=>{const v=r.progress.find(x=>x.i===i).v;return`<div class="rank"><b>${k+1}</b><div>${animalIcon(A[i])}${A[i][0]}<div class="bar"><i style="width:${v*100}%"></i></div></div><span>${Math.floor(v*400)}m</span></div>`}).join("")
+ const leadProgress=r.progress.find(x=>x.i===r.order[0]).v;
+ $("comment").innerHTML=leadProgress>.75?`🔥 마지막 정글 구간! ${animalIcon(lead)} ${lead[0]} 선두`:`🌿 원랩 질주 · ${animalIcon(lead)} ${lead[0]} 선두 · ${animalIcon(sec)} ${sec[0]} 추격 · 격차 ${g}%`;
+ $("board").innerHTML=r.order.map((i,k)=>{const v=r.progress.find(x=>x.i===i).v;return`<div class="rank"><b>${k+1}</b><div>${animalIcon(A[i])}${A[i][0]}<div class="bar"><i style="width:${v*100}%"></i></div></div><span>${Math.floor(v*1800)}m</span></div>`}).join("")
 }
 function showResult(res){
  seenResult=res.version;$("overlay").classList.add("show");$("resultTitle").textContent=res.final?"🏆 최종 순위 발표":"🏁 경기 결과";$("next").textContent=host?(res.final?"새 게임 시작":"다음 경기"):"방장을 기다리는 중";$("next").disabled=!host;

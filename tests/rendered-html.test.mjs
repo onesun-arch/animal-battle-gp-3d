@@ -41,10 +41,14 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /powerPreference:"high-performance"/);
   assert.match(game, /new THREE\.PerspectiveCamera\(58/);
   assert.match(game, /function showStartingGrid/);
-  assert.match(game, /6마리 모두 출발선/);
+  assert.match(game, /6마리 모두 1,800m 정글 원랩/);
   assert.match(game, /const kart=new THREE\.Group/);
   assert.match(game, /targetRotations/);
-  assert.match(game, /t=v\*8\*Math\.PI/);
+  assert.match(game, /t=v\*2\*Math\.PI/);
+  assert.match(game, /duration:45000/);
+  assert.match(game, /LAP 0 \/ 1/);
+  assert.match(game, /v\*1800/);
+  assert.match(game, /boostMaterial/);
   assert.match(game, /grass-tile\.jpg/);
   assert.match(game, /dirt-tile\.jpg/);
   assert.match(game, /amazon-race-arena\.png/);
