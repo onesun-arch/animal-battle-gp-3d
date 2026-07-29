@@ -41,6 +41,8 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /powerPreference:"high-performance"/);
   assert.match(game, /grass-tile\.jpg/);
   assert.match(game, /dirt-tile\.jpg/);
+  assert.match(game, /amazon-race-arena\.png/);
+  assert.match(game, /alphaTest:\.025/);
   assert.match(game, /joinRoom/);
   assert.match(game, /shareRoom/);
   assert.doesNotMatch(game, /esm\.sh\/trystero/);
@@ -52,6 +54,7 @@ test("ships the WebGL game and local textures", async () => {
     access(new URL("../public/assets/vendor/trystero.bundle.js", import.meta.url)),
     access(new URL("../public/assets/textures/grass-tile.jpg", import.meta.url)),
     access(new URL("../public/assets/textures/dirt-tile.jpg", import.meta.url)),
+    access(new URL("../public/assets/amazon-race-arena.png", import.meta.url)),
     access(new URL("../public/og.png", import.meta.url)),
   ]);
 });
