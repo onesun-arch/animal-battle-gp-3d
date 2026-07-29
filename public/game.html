@@ -52,12 +52,12 @@ const THREE=globalThis.THREE;
 const joinRoom=globalThis.Trystero?.joinRoom;
 
 const A=[
- ["번개 토끼","./assets/realistic-characters-3d/rabbit.png","#ff70a8"],
- ["황금 치타","./assets/realistic-characters-3d/cheetah.png","#e3a225"],
- ["붉은 여우","./assets/realistic-characters-3d/fox.png","#df5b32"],
- ["야생마","./assets/realistic-characters-3d/horse.png","#9b6334"],
- ["질주견","./assets/realistic-characters-3d/dog.png","#4387ff"],
- ["파워 판다","./assets/realistic-characters-3d/panda.png","#48535d"]
+ ["번개 토끼","./assets/photoreal-characters-v2/rabbit.png","#ff70a8"],
+ ["황금 치타","./assets/photoreal-characters-v2/cheetah.png","#e3a225"],
+ ["붉은 여우","./assets/photoreal-characters-v2/fox.png","#df5b32"],
+ ["야생마","./assets/photoreal-characters-v2/horse.png","#9b6334"],
+ ["질주견","./assets/photoreal-characters-v2/dog.png","#4387ff"],
+ ["파워 판다","./assets/photoreal-characters-v2/panda.png","#48535d"]
 ];
 const animalIcon=a=>`<img class="inline-sprite" src="${a[1]}" alt="" aria-hidden="true">`;
 const $=x=>document.getElementById(x),uid=()=>crypto.randomUUID(),esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -92,11 +92,12 @@ async function init3D(){
    const canvas=$("glCanvas"),arena=$("arena");
    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:"high-performance"});
    renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.16;
+   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
    const scene=new THREE.Scene();scene.background=new THREE.Color(0x55745a);scene.fog=new THREE.Fog(0x55745a,18,40);
    const camera=new THREE.PerspectiveCamera(58,1,.1,70);camera.position.set(9,5.4,11.5);camera.lookAt(0,.65,2.8);
    scene.add(new THREE.HemisphereLight(0xe8f5dc,0x243718,2.5));
-   const sun=new THREE.DirectionalLight(0xffd38a,4.4);sun.position.set(-9,14,7);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
+   const sun=new THREE.DirectionalLight(0xffd38a,4.4);sun.position.set(-9,14,7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-22;sun.shadow.camera.right=22;sun.shadow.camera.top=18;sun.shadow.camera.bottom=-18;scene.add(sun);
+   const skyFill=new THREE.DirectionalLight(0x9ed7ff,1.1);skyFill.position.set(10,8,-12);scene.add(skyFill);
    const loader=new THREE.TextureLoader();
    const [jungle,grass,dirt,...animals]=await Promise.all([
      loader.loadAsync("./assets/amazon-race-arena.png"),
@@ -105,7 +106,8 @@ async function init3D(){
      ...A.map(a=>loader.loadAsync(a[1]))
    ]);
    [jungle,grass,dirt,...animals].forEach(t=>t.colorSpace=THREE.SRGBColorSpace);
-   scene.background=jungle;scene.backgroundBlurriness=.08;scene.fog.color.set(0x55745a);
+   jungle.mapping=THREE.EquirectangularReflectionMapping;scene.background=jungle;scene.environment=jungle;scene.backgroundBlurriness=.04;scene.fog.color.set(0x55745a);
+   const maxAnisotropy=renderer.capabilities.getMaxAnisotropy();grass.anisotropy=dirt.anisotropy=maxAnisotropy;
    grass.wrapS=grass.wrapT=THREE.RepeatWrapping;grass.repeat.set(7,5);
    dirt.wrapS=dirt.wrapT=THREE.RepeatWrapping;dirt.repeat.set(5,3);
    const ground=new THREE.Mesh(new THREE.PlaneGeometry(38,25),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x678e44}));
@@ -142,17 +144,23 @@ async function init3D(){
    [-1,1].forEach(sign=>{const pillar=new THREE.Mesh(new THREE.CylinderGeometry(.25,.38,4.8,10),archMaterial);pillar.position.copy(startPoint).addScaledVector(startSide,sign*3.25);pillar.position.y+=2.4;pillar.castShadow=true;scene.add(pillar)});
    const arch=new THREE.Mesh(new THREE.BoxGeometry(6.7,.48,.55),archMaterial);arch.position.copy(startPoint);arch.position.y+=4.7;arch.rotation.y=Math.atan2(-startSide.z,startSide.x);arch.castShadow=true;scene.add(arch);
    animals.forEach((texture,i)=>{
-     const kart=new THREE.Group(),bodyMaterial=new THREE.MeshStandardMaterial({color:new THREE.Color(A[i][2]),metalness:.18,roughness:.42});
-     const body=new THREE.Mesh(new THREE.BoxGeometry(1.35,.34,1.65),bodyMaterial);body.position.y=.38;body.castShadow=true;kart.add(body);
-     const nose=new THREE.Mesh(new THREE.BoxGeometry(1.05,.28,.65),bodyMaterial);nose.position.set(0,.43,.83);nose.castShadow=true;kart.add(nose);
-     const seat=new THREE.Mesh(new THREE.BoxGeometry(.68,.72,.34),new THREE.MeshStandardMaterial({color:0x1b2421,roughness:.75}));seat.position.set(0,.78,-.32);seat.rotation.x=-.18;kart.add(seat);
-     const wheelMaterial=new THREE.MeshStandardMaterial({color:0x101312,roughness:.9}),wheels=[];
-     [[-.72,.25,.52],[.72,.25,.52],[-.72,.25,-.53],[.72,.25,-.53]].forEach(([x,y,z])=>{const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.22,14),wheelMaterial);wheel.position.set(x,y,z);wheel.rotation.z=Math.PI/2;wheel.castShadow=true;kart.add(wheel);wheels.push(wheel)});
-     const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.52,.12,.16),new THREE.MeshStandardMaterial({color:0xf3e6bc,metalness:.35,roughness:.4}));bumper.position.set(0,.28,1.14);kart.add(bumper);
+     const kart=new THREE.Group(),paint=new THREE.Color(A[i][2]),bodyMaterial=new THREE.MeshPhysicalMaterial({color:paint,metalness:.64,roughness:.2,clearcoat:1,clearcoatRoughness:.12});
+     const body=new THREE.Mesh(new THREE.SphereGeometry(1,28,14),bodyMaterial);body.scale.set(.76,.25,1.05);body.position.y=.42;body.castShadow=true;kart.add(body);
+     const nose=new THREE.Mesh(new THREE.SphereGeometry(1,24,12),bodyMaterial);nose.scale.set(.61,.22,.58);nose.position.set(0,.47,.72);nose.castShadow=true;kart.add(nose);
+     const seatMaterial=new THREE.MeshStandardMaterial({color:0x111715,metalness:.05,roughness:.62});
+     const seat=new THREE.Mesh(new THREE.SphereGeometry(1,20,12),seatMaterial);seat.scale.set(.39,.52,.24);seat.position.set(0,.75,-.38);seat.rotation.x=-.2;seat.castShadow=true;kart.add(seat);
+     const wheelMaterial=new THREE.MeshStandardMaterial({color:0x090b0a,metalness:.08,roughness:.88}),rimMaterial=new THREE.MeshStandardMaterial({color:0xaeb9b4,metalness:.92,roughness:.18}),wheels=[];
+     [[-.76,.27,.55],[.76,.27,.55],[-.76,.27,-.55],[.76,.27,-.55]].forEach(([x,y,z])=>{const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.29,.29,.24,20),wheelMaterial);wheel.position.set(x,y,z);wheel.rotation.z=Math.PI/2;wheel.castShadow=true;kart.add(wheel);const rim=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,.255,16),rimMaterial);rim.position.copy(wheel.position);rim.rotation.z=Math.PI/2;kart.add(rim);wheels.push(wheel)});
+     const bumperMaterial=new THREE.MeshStandardMaterial({color:0xe8eee9,metalness:.88,roughness:.2});
+     const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.58,.1,.14),bumperMaterial);bumper.position.set(0,.29,1.13);bumper.castShadow=true;kart.add(bumper);
+     const spoiler=new THREE.Mesh(new THREE.BoxGeometry(1.42,.09,.28),bodyMaterial);spoiler.position.set(0,.72,-1.02);spoiler.castShadow=true;kart.add(spoiler);
+     const steering=new THREE.Mesh(new THREE.TorusGeometry(.21,.035,10,24),new THREE.MeshStandardMaterial({color:0x141817,metalness:.55,roughness:.32}));steering.position.set(0,1.02,.15);steering.rotation.x=-1.05;kart.add(steering);
+     [-.32,.32].forEach(x=>{const lamp=new THREE.Mesh(new THREE.SphereGeometry(.09,12,8),new THREE.MeshStandardMaterial({color:0xfff2c0,emissive:0xffd36a,emissiveIntensity:2.2,roughness:.12}));lamp.scale.z=.45;lamp.position.set(x,.52,1.17);kart.add(lamp)});
+     const contactShadow=new THREE.Mesh(new THREE.CircleGeometry(.92,28),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.28,depthWrite:false}));contactShadow.rotation.x=-Math.PI/2;contactShadow.scale.set(1,1.35,1);contactShadow.position.y=.055;kart.add(contactShadow);
      const exhaustMaterial=new THREE.MeshBasicMaterial({color:0x65f7ff,transparent:true,opacity:.9}),exhausts=[];
      [-.38,.38].forEach(x=>{const flame=new THREE.Mesh(new THREE.ConeGeometry(.11,.62,8),exhaustMaterial);flame.rotation.x=-Math.PI/2;flame.position.set(x,.34,-1.12);kart.add(flame);exhausts.push(flame)});
      const material=new THREE.SpriteMaterial({map:texture,transparent:true,alphaTest:.025,depthWrite:false});
-     const rider=new THREE.Sprite(material);rider.position.set(0,1.42,-.18);rider.scale.set(1.18,1.18,1);rider.renderOrder=5;kart.add(rider);
+     const rider=new THREE.Sprite(material);rider.position.set(0,1.36,-.14);rider.scale.set(1.42,1.42,1);rider.renderOrder=5;kart.add(rider);
      kart.userData={wheels,exhausts};kart.visible=false;kart.renderOrder=4;scene.add(kart);
      GL.racers[i]=kart;GL.targets[i]=new THREE.Vector3();GL.targetRotations[i]=0
    });

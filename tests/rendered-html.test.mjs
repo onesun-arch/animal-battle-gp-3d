@@ -56,6 +56,9 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /grass-tile\.jpg/);
   assert.match(game, /dirt-tile\.jpg/);
   assert.match(game, /amazon-race-arena\.png/);
+  assert.match(game, /photoreal-characters-v2\/rabbit\.png/);
+  assert.match(game, /new THREE\.MeshPhysicalMaterial/);
+  assert.match(game, /scene\.environment=jungle/);
   assert.match(game, /alphaTest:\.025/);
   assert.match(game, /joinRoom/);
   assert.match(game, /shareRoom/);
