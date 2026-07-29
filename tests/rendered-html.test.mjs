@@ -44,11 +44,15 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /6마리 모두 1,800m 정글 원랩/);
   assert.match(game, /const kart=new THREE\.Group/);
   assert.match(game, /targetRotations/);
-  assert.match(game, /t=v\*2\*Math\.PI/);
-  assert.match(game, /duration:45000/);
+  assert.match(game, /new THREE\.CatmullRomCurve3/);
+  assert.match(game, /function ribbonGeometry/);
+  assert.match(game, /GL\.trackCurve\.getPointAt/);
+  assert.match(game, /duration:22000/);
   assert.match(game, /LAP 0 \/ 1/);
   assert.match(game, /v\*1800/);
   assert.match(game, /boostMaterial/);
+  assert.match(game, /exhaustMaterial/);
+  assert.match(game, /classList\.toggle\("racing"/);
   assert.match(game, /grass-tile\.jpg/);
   assert.match(game, /dirt-tile\.jpg/);
   assert.match(game, /amazon-race-arena\.png/);
