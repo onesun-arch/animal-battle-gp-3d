@@ -45,6 +45,11 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /alphaTest:\.025/);
   assert.match(game, /joinRoom/);
   assert.match(game, /shareRoom/);
+  assert.match(game, /id="allin"/);
+  assert.match(game, /id="loan"/);
+  assert.match(game, /p\.coins<=0/);
+  assert.match(game, /최종 순위 발표/);
+  assert.match(game, /긴급대출은 최대 2회/);
   assert.doesNotMatch(game, /esm\.sh\/trystero/);
   assert.doesNotMatch(game, /<script type="module">/);
   assert.match(game, /three\.bundle\.js/);

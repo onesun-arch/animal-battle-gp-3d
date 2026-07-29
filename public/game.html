@@ -15,8 +15,8 @@ h1,h2,h3{margin-top:0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;m
 .track{display:none}
 .center{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);width:42%;height:31%;display:grid;place-items:center;text-align:center;color:#fff;text-shadow:0 2px 8px #154d23;z-index:3;pointer-events:none}.comment{background:#123c2ccc;padding:9px;border-radius:11px;font-weight:900;font-size:13px}
 .lap{position:absolute;right:14px;top:14px;background:#10241ee8;color:#fff;padding:9px 12px;border-radius:12px;font-weight:1000;z-index:5}.racer{position:absolute;width:78px;height:78px;padding:4px;border-radius:50%;background:linear-gradient(145deg,#fff,#d9c295);border:3px solid var(--c);display:grid;place-items:center;transform:translate(-50%,-50%);transition:left .12s linear,top .12s linear;box-shadow:0 8px 18px #0008;z-index:4}.racer img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}.racer.lead{box-shadow:0 0 0 5px #ffd45c,0 9px 25px #0008;animation:pulse .45s ease-in-out infinite alternate}.racer.sprint{animation:shake .12s linear infinite}@keyframes pulse{to{transform:translate(-50%,-50%) scale(1.12)}}@keyframes shake{50%{margin-left:4px}}
-.side{padding:13px}.code{font-size:28px;letter-spacing:5px;font-weight:1000;color:#1e7b4b}.room-actions{display:flex;gap:6px;margin:8px 0 2px}.room-actions .btn{flex:1;padding:9px;font-size:13px}.players{display:grid;gap:6px;margin:10px 0}.player{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:8px;background:#fff;border:1px solid #d8e6ee;border-radius:12px;padding:8px}.player.me{border:2px solid #2b8a57}.ready{color:#16924e;font-weight:900}.wait{color:#d57f15;font-weight:900}.predict{background:#fff;border:1px solid #d8e6ee;border-radius:14px;padding:10px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.grid select,.predict input{width:100%;padding:9px 5px;border:1px solid #c9dbe6;border-radius:9px}.actions{display:grid;gap:7px;margin-top:9px}.status{margin-top:9px;padding:9px;border-radius:11px;background:#173c2c;color:#fff;font-size:13px;line-height:1.45}.board{margin-top:10px}.rank{display:grid;grid-template-columns:25px 1fr auto;gap:6px;background:#fff;margin-top:4px;padding:7px;border-radius:10px}.bar{height:6px;background:#e5eef3;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#2e9b5c,#d18b2e)}.inline-sprite{width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:4px;border:2px solid #fff;box-shadow:0 2px 7px #0003}
-.overlay{position:fixed;inset:0;background:#071522e9;display:none;align-items:center;justify-content:center;padding:14px;z-index:999}.overlay.show{display:flex}.result{background:#fff;border-radius:20px;padding:18px;width:min(780px,96vw);max-height:92vh;overflow:auto}.result table{width:100%;border-collapse:collapse}.result th,.result td{padding:8px;border-bottom:1px solid #e1e9ee;text-align:center;font-size:13px}.win{background:#fff6cf}.penalty{background:#fff0ef;border-radius:11px;padding:10px;margin-top:10px;font-weight:900;color:#8b2723}
+.side{padding:13px}.code{font-size:28px;letter-spacing:5px;font-weight:1000;color:#1e7b4b}.room-actions{display:flex;gap:6px;margin:8px 0 2px}.room-actions .btn{flex:1;padding:9px;font-size:13px}.players{display:grid;gap:6px;margin:10px 0}.player{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:8px;background:#fff;border:1px solid #d8e6ee;border-radius:12px;padding:8px}.player.me{border:2px solid #2b8a57}.player.eliminated{opacity:.55;background:#ececec;border-color:#aaa}.ready{color:#16924e;font-weight:900}.wait{color:#d57f15;font-weight:900}.out{color:#a52828;font-weight:1000}.predict{background:#fff;border:1px solid #d8e6ee;border-radius:14px;padding:10px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.grid select,.predict input{width:100%;padding:9px 5px;border:1px solid #c9dbe6;border-radius:9px}.money-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.money-actions .btn{padding:9px;font-size:13px}.loan-note{font-size:11px;opacity:.68;margin-top:5px}.actions{display:grid;gap:7px;margin-top:9px}.status{margin-top:9px;padding:9px;border-radius:11px;background:#173c2c;color:#fff;font-size:13px;line-height:1.45}.board{margin-top:10px}.rank{display:grid;grid-template-columns:25px 1fr auto;gap:6px;background:#fff;margin-top:4px;padding:7px;border-radius:10px}.bar{height:6px;background:#e5eef3;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#2e9b5c,#d18b2e)}.inline-sprite{width:36px;height:36px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:4px;border:2px solid #fff;box-shadow:0 2px 7px #0003}
+.overlay{position:fixed;inset:0;background:#071522e9;display:none;align-items:center;justify-content:center;padding:14px;z-index:999}.overlay.show{display:flex}.result{background:#fff;border-radius:20px;padding:18px;width:min(860px,96vw);max-height:92vh;overflow:auto}.result table{width:100%;border-collapse:collapse}.result th,.result td{padding:8px;border-bottom:1px solid #e1e9ee;text-align:center;font-size:13px}.win{background:#fff6cf}.last{background:#ffe1df}.penalty{background:#fff0ef;border-radius:11px;padding:10px;margin-top:10px;font-weight:900;color:#8b2723}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.arena{height:520px}}@media(max-width:600px){.wrap{padding:6px}.arena{height:450px}.racer{width:54px;height:54px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -39,11 +39,11 @@ h1,h2,h3{margin-top:0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;m
 <div style="display:flex;justify-content:space-between;align-items:center"><div><b>방 코드</b><div id="code" class="code">0000</div></div><button id="leave" class="btn secondary">나가기</button></div>
 <div class="room-actions"><button id="share" class="btn primary">초대 링크 공유</button><button id="copyCode" class="btn secondary">코드 복사</button></div>
 <div id="players" class="players"></div>
-<div class="predict"><h3>내 예측</h3><div class="grid"><select id="p1"></select><select id="p2"></select><select id="p3"></select></div><input id="bet" type="number" min="0" step="10" value="50" style="margin-top:7px" placeholder="베팅 코인"><div style="margin-top:6px;font-weight:900">보유 코인: <span id="coins">300</span></div><div class="actions"><button id="ready" class="btn primary">예측·베팅 확정</button><button id="start" class="btn primary hidden">방장: 경기 시작</button></div></div>
+<div class="predict"><h3>내 예측</h3><div class="grid"><select id="p1"></select><select id="p2"></select><select id="p3"></select></div><input id="bet" type="number" min="0" step="10" value="50" style="margin-top:7px" placeholder="베팅 코인"><div class="money-actions"><button id="allin" class="btn primary">🔥 올인</button><button id="loan" class="btn secondary">🏦 긴급대출 +200</button></div><div style="margin-top:6px;font-weight:900">보유 <span id="coins">300</span>코인 · 빚 <span id="debt">0</span>코인</div><div class="loan-note">100코인 이하일 때 최대 2회 · 200코인 수령, 250코인 상환</div><div class="actions"><button id="ready" class="btn primary">예측·베팅 확정</button><button id="start" class="btn primary hidden">방장: 경기 시작</button></div></div>
 <div id="status" class="status">연결 중...</div><div class="board"><b>실시간 순위</b><div id="board"></div></div>
 </aside></main></div></div>
 
-<div id="overlay" class="overlay"><div class="result"><h2>🏆 경기 결과</h2><div id="result"></div><button id="next" class="btn primary" style="width:100%;margin-top:10px">다음 경기</button></div></div>
+<div id="overlay" class="overlay"><div class="result"><h2 id="resultTitle">🏆 경기 결과</h2><div id="result"></div><button id="next" class="btn primary" style="width:100%;margin-top:10px">다음 경기</button></div></div>
 
 <script src="./assets/vendor/three.bundle.js"></script>
 <script src="./assets/vendor/trystero.bundle.js"></script>
@@ -169,7 +169,7 @@ $("bet").addEventListener("blur",()=>{
 });
 $("cb").onclick=()=>{const n=$("cn").value.trim();if(!n)return alert("닉네임을 입력하세요.");connect(String(Math.floor(1000+Math.random()*9000)),n,true)};
 $("jb").onclick=()=>{const n=$("jn").value.trim(),c=$("jc").value.trim();if(!n)return alert("닉네임을 입력하세요.");if(!/^\d{4}$/.test(c))return alert("4자리 코드를 입력하세요.");connect(c,n,false)};
-$("ready").onclick=submitReady;$("start").onclick=startRace;$("next").onclick=nextRound;$("leave").onclick=()=>{room?.leave?.();location.href=location.pathname};
+$("ready").onclick=submitReady;$("start").onclick=startRace;$("next").onclick=nextRound;$("allin").onclick=()=>{const m=me();if(m&&!m.eliminated&&!m.ready&&!state?.running)$("bet").value=Math.max(0,Math.floor(m.coins))};$("loan").onclick=requestLoan;$("leave").onclick=()=>{room?.leave?.();location.href=location.pathname};
 $("share").onclick=shareRoom;$("copyCode").onclick=()=>copyText(roomCode,"방 코드가 복사되었습니다.");
 
 async function copyText(text,message){
@@ -182,7 +182,7 @@ async function shareRoom(){
  try{if(navigator.share){await navigator.share(data)}else await copyText(url.href,"초대 링크가 복사되었습니다.")}
  catch(e){if(e?.name!=="AbortError")await copyText(url.href,"초대 링크가 복사되었습니다.")}
 }
-function player(name,isHost){return{id:myId,name,host:isHost,coins:300,total:0,ready:false,picks:[],bet:0}}
+function player(name,isHost){return{id:myId,name,host:isHost,coins:300,debt:0,loans:0,total:0,ready:false,picks:[],bet:0,eliminated:false,eliminatedRound:null}}
 function connect(code,name,isHost){
  if(!joinRoom)return alert("멀티플레이 모듈을 불러오지 못했습니다. 새로고침해 주세요.");
  roomCode=code;host=isHost;
@@ -209,7 +209,7 @@ function connect(code,name,isHost){
    if(!d.race&&!d.running)resetTrack();
    render();
  };
- actions.submit.onMessage=d=>{if(host){const p=state.players.find(x=>x.id===d.id);if(p&&!state.running){Object.assign(p,d.data,{ready:true});sendState()}}};
+ actions.submit.onMessage=d=>{if(host&&!state.running){const p=state.players.find(x=>x.id===d.id);if(!p||p.eliminated)return;if(d.data?.type==="loan"){if(grantLoan(p))sendState();return}const picks=d.data?.picks||[],bet=Math.floor(Number(d.data?.bet));if(picks.length===3&&new Set(picks).size===3&&Number.isFinite(bet)&&bet>=0&&bet<=p.coins){Object.assign(p,{picks,bet,ready:true});sendState()}}};
  actions.frame.onMessage=d=>{
    if(host||!state||!d)return;
    if(!state.running)return;
@@ -243,26 +243,42 @@ function connect(code,name,isHost){
 }
 function sendState(){if(!host)return;state.version=Number(state.version||0)+1;lastStateVersion=state.version;actions.state.send(structuredClone(state));render()}
 function me(){return state?.players.find(p=>p.id===myId)}
+function activePlayers(){return state?.players.filter(p=>!p.eliminated)||[]}
+function netWorth(p){return Math.floor(Number(p.coins||0)-Number(p.debt||0))}
+function grantLoan(p){
+ if(!p||p.eliminated||p.ready||state.running||p.coins>100||(p.loans||0)>=2)return false;
+ p.coins+=200;p.debt=(p.debt||0)+250;p.loans=(p.loans||0)+1;return true
+}
+function requestLoan(){
+ const m=me();if(!m)return;
+ if(m.eliminated)return alert("탈락한 참가자는 대출을 받을 수 없습니다.");
+ if(m.ready||state.running)return alert("경기 준비 전까지만 대출할 수 있습니다.");
+ if(m.coins>100)return alert("보유 코인이 100 이하일 때만 긴급대출을 받을 수 있습니다.");
+ if((m.loans||0)>=2)return alert("긴급대출은 최대 2회까지 가능합니다.");
+ if(host){grantLoan(m);sendState()}else actions.submit.send({id:myId,data:{type:"loan"}})
+}
 function render(){
  if(!state)return;
  $("round").textContent=state.round;
  const m=me();if(m){
    $("coins").textContent=m.coins;
+   $("debt").textContent=m.debt||0;
    $("bet").max=Math.max(0,Math.floor(m.coins));
    const entered=Math.floor(Number($("bet").value)||0);
    if(entered>m.coins)$("bet").value=Math.max(0,Math.floor(m.coins));
  }
- $("players").innerHTML=state.players.map((p,i)=>`<div class="player ${p.id===myId?"me":""}"><b>${i+1}</b><div><b>${esc(p.name)}</b>${p.host?" 👑":""}<small style="display:block;opacity:.65">${p.coins}코인 · 누적 ${p.total}점</small></div><span class="${p.ready?"ready":"wait"}">${p.ready?"준비":"대기"}</span></div>`).join("");
+ $("players").innerHTML=state.players.map((p,i)=>`<div class="player ${p.id===myId?"me":""} ${p.eliminated?"eliminated":""}"><b>${i+1}</b><div><b>${esc(p.name)}</b>${p.host?" 👑":""}<small style="display:block;opacity:.65">${p.coins}코인 · 빚 ${p.debt||0} · 누적 ${p.total}점</small></div><span class="${p.eliminated?"out":p.ready?"ready":"wait"}">${p.eliminated?"탈락":p.ready?"준비":"대기"}</span></div>`).join("");
  $("start").classList.toggle("hidden",!host);
- const all=state.players.length>=2&&state.players.every(p=>p.ready);
- $("start").disabled=state.running||!all;$("ready").disabled=state.running||!!m?.ready;
- ["p1","p2","p3","bet"].forEach(x=>$(x).disabled=state.running||!!m?.ready);
- $("status").innerHTML=state.running?"🏁 경기 진행 중":all?"✅ 전원 준비 완료 · 방장이 시작하세요":`⏳ ${state.players.filter(p=>p.ready).length}/${state.players.length}명 준비 · 최소 2명`;
+ const active=activePlayers(),all=active.length>=2&&active.every(p=>p.ready),locked=state.running||!!m?.ready||!!m?.eliminated;
+ $("start").disabled=state.running||!all;$("ready").disabled=locked;$("allin").disabled=locked;$("loan").disabled=locked||!m||m.coins>100||(m.loans||0)>=2;
+ ["p1","p2","p3","bet"].forEach(x=>$(x).disabled=locked);
+ $("status").innerHTML=m?.eliminated?"💀 코인이 0이 되어 탈락했습니다. 최종 순위를 기다리세요.":state.running?"🏁 경기 진행 중":all?"✅ 생존자 전원 준비 완료 · 방장이 시작하세요":`⏳ ${active.filter(p=>p.ready).length}/${active.length}명 준비 · 생존자 최소 2명`;
  if(state.race)renderRace(state.race);
  if(state.result&&state.result.version>seenResult)showResult(state.result);
 }
 function submitReady(){
  const m=me();if(!m)return alert("방장과 연결 중입니다.");
+ if(m.eliminated)return alert("코인이 0이 되어 탈락했습니다.");
  const picks=[+$("p1").value,+$("p2").value,+$("p3").value],bet=Math.floor(+$("bet").value);
  if(picks.some(Number.isNaN)||new Set(picks).size<3)return alert("서로 다른 동물 3마리를 선택하세요.");
  if(!Number.isFinite(bet)||bet<0||bet>m.coins)return alert("보유 코인 안에서 베팅하세요.");
@@ -270,8 +286,9 @@ function submitReady(){
 }
 function startRace(){
  if(!host||state.running)return;
- if(state.players.length<2||!state.players.every(p=>p.ready))return alert("모든 참가자가 준비해야 합니다.");
- state.players.forEach(p=>p.coins-=p.bet);
+ const active=activePlayers();
+ if(active.length<2||!active.every(p=>p.ready))return alert("생존한 참가자 모두가 준비해야 합니다.");
+ active.forEach(p=>p.coins-=p.bet);
  state.running=true;state.result=null;
  currentRaceId=`${state.round}-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
  state.race={raceId:currentRaceId,round:state.round,start:Date.now(),duration:18000,lap:1,progress:A.map((_,i)=>({i,v:0,seed:Math.random()*20})),order:[0,1,2,3,4,5]};
@@ -294,19 +311,27 @@ function tick(){
 function score(picks,actual){let total=0,exact=0;picks.forEach((a,i)=>{const d=Math.abs(actual.indexOf(a)-i);total+=d===0?5:d===1?3:d===2?2:1;if(d===0)exact++});if(picks[0]===actual[0])total+=3;if(exact===3)total+=15;return{total,exact}}
 function mult(n){return n>=3?5:n===2?3:n===1?1.8:1}
 function finishRace(){
- const actual=state.race.order,fac=state.round===10?2:1;
- const rows=state.players.map(p=>({...p,score:score(p.picks,actual)}));rows.forEach(r=>r.points=r.score.total*fac);
+ const actual=state.race.order,fac=state.round===10?2:1,contestants=activePlayers();
+ const rows=contestants.map(p=>({...p,score:score(p.picks,actual)}));rows.forEach(r=>r.points=r.score.total*fac);
  const be=Math.max(...rows.map(r=>r.score.exact)),bp=Math.max(...rows.filter(r=>r.score.exact===be).map(r=>r.points)),wins=rows.filter(r=>r.score.exact===be&&r.points===bp);
- const pot=state.players.reduce((s,p)=>s+p.bet,0),mu=mult(be)*fac,prize=Math.floor(pot*mu),share=Math.floor(prize/wins.length);
+ const pot=contestants.reduce((s,p)=>s+p.bet,0),mu=mult(be)*fac,prize=Math.floor(pot*mu),share=Math.floor(prize/wins.length);
  wins.forEach(w=>state.players.find(p=>p.id===w.id).coins+=share);rows.forEach(r=>state.players.find(p=>p.id===r.id).total+=r.points);
- const low=Math.min(...rows.map(r=>r.points)),losers=rows.filter(r=>r.points===low&&!wins.some(w=>w.id===r.id));
- const pens=["동물 울음소리 3번","우승자에게 음료 가져다주기","10초간 우승 동물 흉내","패배 소감 20초","다음 경기까지 존댓말"];
- state.running=false;state.result={version:Date.now(),actual,rows,winnerIds:wins.map(w=>w.id),loserIds:losers.map(l=>l.id),pot,mu,prize,share,penalty:losers.length?pens[Math.floor(Math.random()*pens.length)]:"벌칙 없음"};
+ const newlyEliminated=[];contestants.forEach(p=>{if(p.coins<=0){p.coins=0;p.eliminated=true;p.eliminatedRound=state.round;newlyEliminated.push(p.id)}});
+ const final=state.round>=10||activePlayers().length<2;
+ const finalRanking=final?[...state.players].map(p=>({...p,net:netWorth(p)})).sort((a,b)=>{
+   if(!!a.eliminated!==!!b.eliminated)return a.eliminated?1:-1;
+   if(a.eliminated&&b.eliminated&&(a.eliminatedRound||0)!==(b.eliminatedRound||0))return (b.eliminatedRound||0)-(a.eliminatedRound||0);
+   return b.net-a.net||b.total-a.total
+ }):[];
+ const pens=["동물 울음소리 3번 하기","우승자에게 음료 가져다주기","20초간 우승 동물 흉내 내기","패배 소감 30초 발표하기","다음 게임 동안 모두에게 존댓말 쓰기"];
+ const last=finalRanking.at(-1);
+ state.running=false;state.result={version:Date.now(),actual,rows,winnerIds:wins.map(w=>w.id),newlyEliminated,pot,mu,prize,share,final,finalReason:state.round>=10?"10경기 종료":"생존자 1명 남음",finalRanking,lastId:last?.id||null,penalty:last?pens[Math.floor(Math.random()*pens.length)]:"벌칙 없음"};
  state.players.forEach(p=>{p.ready=false;p.picks=[];p.bet=0});sendState()
 }
 function nextRound(){
  if(!host){$("status").textContent="방장이 다음 경기로 넘어가기를 기다리는 중입니다.";return}
- seenResult=Math.max(seenResult,Number(state.result?.version||0));state.result=null;state.race=null;state.running=false;currentRaceId="";state.round=state.round===10?1:state.round+1;
+ const restart=!!state.result?.final;seenResult=Math.max(seenResult,Number(state.result?.version||0));state.result=null;state.race=null;state.running=false;currentRaceId="";
+ if(restart){state.round=1;state.players.forEach(p=>Object.assign(p,{coins:300,debt:0,loans:0,total:0,ready:false,picks:[],bet:0,eliminated:false,eliminatedRound:null}))}else state.round++;
  $("overlay").classList.remove("show");resetInputs();actions.command.send({type:"next",version:seenResult});sendState();resetTrack()
 }
 function resetInputs(){
@@ -324,9 +349,14 @@ function renderRace(r){
  $("board").innerHTML=r.order.map((i,k)=>{const v=r.progress.find(x=>x.i===i).v;return`<div class="rank"><b>${k+1}</b><div>${animalIcon(A[i])}${A[i][0]}<div class="bar"><i style="width:${v*100}%"></i></div></div><span>${Math.floor(v*400)}m</span></div>`}).join("")
 }
 function showResult(res){
- seenResult=res.version;$("overlay").classList.add("show");$("next").textContent=host?"다음 경기":"방장을 기다리는 중";$("next").disabled=!host;
+ seenResult=res.version;$("overlay").classList.add("show");$("resultTitle").textContent=res.final?"🏆 최종 순위 발표":"🏁 경기 결과";$("next").textContent=host?(res.final?"새 게임 시작":"다음 경기"):"방장을 기다리는 중";$("next").disabled=!host;
+ if(res.final){
+   const ranking=res.finalRanking||[],last=ranking.find(p=>p.id===res.lastId);
+   $("result").innerHTML=`<div class="status">${res.finalReason||"게임 종료"} · 보유 코인에서 대출 상환액을 뺀 순자산 기준</div><table><tr><th>최종 순위</th><th>이름</th><th>상태</th><th>보유 코인</th><th>빚</th><th>순자산</th><th>누적 점수</th></tr>${ranking.map((p,i)=>`<tr class="${p.id===res.lastId?"last":i===0?"win":""}"><td>${i===0?"🥇 ":i===1?"🥈 ":i===2?"🥉 ":""}${i+1}위</td><td>${esc(p.name)}</td><td>${p.eliminated?`${p.eliminatedRound}경기 탈락`:"생존"}</td><td>${p.coins}</td><td>${p.debt||0}</td><td>${p.net}</td><td>${p.total}</td></tr>`).join("")}</table><div class="penalty">💀 최종 꼴찌: ${last?esc(last.name):"없음"}<br>🎯 벌칙: ${res.penalty}</div>`;
+   return
+ }
  const sorted=[...res.rows].sort((a,b)=>b.score.exact-a.score.exact||b.points-a.points);
- $("result").innerHTML=`<p><b>실제 TOP3:</b> ${res.actual.slice(0,3).map((i,k)=>`${k+1}위 ${animalIcon(A[i])} ${A[i][0]}`).join(" · ")}</p><table><tr><th>순위</th><th>이름</th><th>정확 적중</th><th>점수</th><th>코인</th></tr>${sorted.map((r,i)=>`<tr class="${res.winnerIds.includes(r.id)?"win":""}"><td>${i+1}</td><td>${esc(r.name)}</td><td>${r.score.exact}</td><td>${r.points}</td><td>${res.winnerIds.includes(r.id)?`+${res.share}`:`-${r.bet}`}</td></tr>`).join("")}</table><div class="status">배수 ${res.mu}배 · 총 상금 ${res.prize}코인 · 우승자 1인당 ${res.share}코인</div><div class="penalty">💀 벌칙 대상: ${res.rows.filter(r=>res.loserIds.includes(r.id)).map(r=>esc(r.name)).join(", ")||"없음"}<br>🎯 ${res.penalty}</div>`
+ $("result").innerHTML=`<p><b>실제 TOP3:</b> ${res.actual.slice(0,3).map((i,k)=>`${k+1}위 ${animalIcon(A[i])} ${A[i][0]}`).join(" · ")}</p><table><tr><th>순위</th><th>이름</th><th>정확 적중</th><th>점수</th><th>코인</th></tr>${sorted.map((r,i)=>`<tr class="${res.winnerIds.includes(r.id)?"win":""}"><td>${i+1}</td><td>${esc(r.name)}</td><td>${r.score.exact}</td><td>${r.points}</td><td>${res.winnerIds.includes(r.id)?`+${res.share}`:`-${r.bet}`}</td></tr>`).join("")}</table><div class="status">배수 ${res.mu}배 · 총 상금 ${res.prize}코인 · 우승자 1인당 ${res.share}코인</div>${res.newlyEliminated?.length?`<div class="penalty">💀 코인 0 탈락: ${state.players.filter(p=>res.newlyEliminated.includes(p.id)).map(p=>esc(p.name)).join(", ")}</div>`:""}`
 }
 </script>
 </body>
