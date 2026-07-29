@@ -42,7 +42,7 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /new THREE\.PerspectiveCamera\(58/);
   assert.match(game, /function showStartingGrid/);
   assert.match(game, /6마리 모두 1,800m 정글 원랩/);
-  assert.match(game, /const kart=new THREE\.Group/);
+  assert.match(game, /kart=new THREE\.Group/);
   assert.match(game, /targetRotations/);
   assert.match(game, /new THREE\.CatmullRomCurve3/);
   assert.match(game, /function ribbonGeometry/);
@@ -59,6 +59,13 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /photoreal-characters-v2\/rabbit\.png/);
   assert.match(game, /new THREE\.MeshPhysicalMaterial/);
   assert.match(game, /scene\.environment=jungle/);
+  assert.match(game, /McLaren P1/);
+  assert.match(game, /Lamborghini Aventador/);
+  assert.match(game, /Ferrari LaFerrari/);
+  assert.match(game, /Bugatti Chiron/);
+  assert.match(game, /Nissan GT-R R35/);
+  assert.match(game, /Rolls-Royce Phantom/);
+  assert.match(game, /const racerName=/);
   assert.match(game, /alphaTest:\.025/);
   assert.match(game, /joinRoom/);
   assert.match(game, /shareRoom/);

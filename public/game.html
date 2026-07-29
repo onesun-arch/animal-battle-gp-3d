@@ -59,7 +59,16 @@ const A=[
  ["질주견","./assets/photoreal-characters-v2/dog.png","#4387ff"],
  ["파워 판다","./assets/photoreal-characters-v2/panda.png","#48535d"]
 ];
+const CARS=[
+ {name:"McLaren P1",color:"#f36f21",scale:[.8,.22,1.1],cab:[.42,.22,.42],wing:false},
+ {name:"Lamborghini Aventador",color:"#f4c928",scale:[.84,.2,1.14],cab:[.45,.18,.4],wing:true},
+ {name:"Ferrari LaFerrari",color:"#d80c18",scale:[.79,.23,1.12],cab:[.4,.23,.43],wing:false},
+ {name:"Bugatti Chiron",color:"#1657a6",scale:[.86,.26,1.08],cab:[.44,.24,.44],wing:false},
+ {name:"Nissan GT-R R35",color:"#596168",scale:[.84,.28,1.08],cab:[.45,.28,.42],wing:true,boxy:true},
+ {name:"Rolls-Royce Phantom",color:"#171918",scale:[.86,.32,1.16],cab:[.48,.34,.48],wing:false,boxy:true,luxury:true}
+];
 const animalIcon=a=>`<img class="inline-sprite" src="${a[1]}" alt="" aria-hidden="true">`;
+const racerName=i=>`${A[i][0]} · ${CARS[i].name}`;
 const $=x=>document.getElementById(x),uid=()=>crypto.randomUUID(),esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 let room=null,roomCode="",myId=uid(),host=false,state=null,actions={},timer=null,lastFrame=0,seenResult=0,lastStateVersion=0,currentRaceId="";
 const config={appId:"animal-battle-gp-public-v3"};
@@ -144,23 +153,30 @@ async function init3D(){
    [-1,1].forEach(sign=>{const pillar=new THREE.Mesh(new THREE.CylinderGeometry(.25,.38,4.8,10),archMaterial);pillar.position.copy(startPoint).addScaledVector(startSide,sign*3.25);pillar.position.y+=2.4;pillar.castShadow=true;scene.add(pillar)});
    const arch=new THREE.Mesh(new THREE.BoxGeometry(6.7,.48,.55),archMaterial);arch.position.copy(startPoint);arch.position.y+=4.7;arch.rotation.y=Math.atan2(-startSide.z,startSide.x);arch.castShadow=true;scene.add(arch);
    animals.forEach((texture,i)=>{
-     const kart=new THREE.Group(),paint=new THREE.Color(A[i][2]),bodyMaterial=new THREE.MeshPhysicalMaterial({color:paint,metalness:.64,roughness:.2,clearcoat:1,clearcoatRoughness:.12});
-     const body=new THREE.Mesh(new THREE.SphereGeometry(1,28,14),bodyMaterial);body.scale.set(.76,.25,1.05);body.position.y=.42;body.castShadow=true;kart.add(body);
-     const nose=new THREE.Mesh(new THREE.SphereGeometry(1,24,12),bodyMaterial);nose.scale.set(.61,.22,.58);nose.position.set(0,.47,.72);nose.castShadow=true;kart.add(nose);
+     const spec=CARS[i],kart=new THREE.Group(),paint=new THREE.Color(spec.color),bodyMaterial=new THREE.MeshPhysicalMaterial({color:paint,metalness:.64,roughness:.2,clearcoat:1,clearcoatRoughness:.12});
+     const bodyGeometry=spec.boxy?new THREE.BoxGeometry(1.6,.52,2.08,3,2,4):new THREE.SphereGeometry(1,28,14);
+     const body=new THREE.Mesh(bodyGeometry,bodyMaterial);body.scale.set(...(spec.boxy?[1,1,1]:spec.scale));body.position.y=spec.luxury?.52:.42;body.castShadow=true;kart.add(body);
+     const noseGeometry=spec.boxy?new THREE.BoxGeometry(1.5,.28,.84,3,2,3):new THREE.SphereGeometry(1,24,12);
+     const nose=new THREE.Mesh(noseGeometry,bodyMaterial);nose.scale.set(...(spec.boxy?[1,1,1]:[spec.scale[0]*.8,spec.scale[1],.58]));nose.position.set(0,spec.luxury?.64:.47,.72);nose.castShadow=true;kart.add(nose);
      const seatMaterial=new THREE.MeshStandardMaterial({color:0x111715,metalness:.05,roughness:.62});
      const seat=new THREE.Mesh(new THREE.SphereGeometry(1,20,12),seatMaterial);seat.scale.set(.39,.52,.24);seat.position.set(0,.75,-.38);seat.rotation.x=-.2;seat.castShadow=true;kart.add(seat);
+     const glassMaterial=new THREE.MeshPhysicalMaterial({color:0x18313a,metalness:.15,roughness:.08,transmission:.18,transparent:true,opacity:.82,clearcoat:1});
+     const cabin=new THREE.Mesh(new THREE.SphereGeometry(1,24,12),glassMaterial);cabin.scale.set(...spec.cab);cabin.position.set(0,spec.luxury?1.02:.76,-.22);cabin.castShadow=true;kart.add(cabin);
      const wheelMaterial=new THREE.MeshStandardMaterial({color:0x090b0a,metalness:.08,roughness:.88}),rimMaterial=new THREE.MeshStandardMaterial({color:0xaeb9b4,metalness:.92,roughness:.18}),wheels=[];
      [[-.76,.27,.55],[.76,.27,.55],[-.76,.27,-.55],[.76,.27,-.55]].forEach(([x,y,z])=>{const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.29,.29,.24,20),wheelMaterial);wheel.position.set(x,y,z);wheel.rotation.z=Math.PI/2;wheel.castShadow=true;kart.add(wheel);const rim=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,.255,16),rimMaterial);rim.position.copy(wheel.position);rim.rotation.z=Math.PI/2;kart.add(rim);wheels.push(wheel)});
      const bumperMaterial=new THREE.MeshStandardMaterial({color:0xe8eee9,metalness:.88,roughness:.2});
      const bumper=new THREE.Mesh(new THREE.BoxGeometry(1.58,.1,.14),bumperMaterial);bumper.position.set(0,.29,1.13);bumper.castShadow=true;kart.add(bumper);
-     const spoiler=new THREE.Mesh(new THREE.BoxGeometry(1.42,.09,.28),bodyMaterial);spoiler.position.set(0,.72,-1.02);spoiler.castShadow=true;kart.add(spoiler);
+     if(spec.wing){const spoiler=new THREE.Mesh(new THREE.BoxGeometry(1.45,.08,.3),bodyMaterial);spoiler.position.set(0,.82,-1.12);spoiler.castShadow=true;kart.add(spoiler)}
+     if(i===3){const chironArc=new THREE.Mesh(new THREE.TorusGeometry(.2,.045,10,22,Math.PI),bumperMaterial);chironArc.position.set(0,.5,1.18);chironArc.rotation.z=Math.PI;kart.add(chironArc)}
+     if(i===5){const grille=new THREE.Mesh(new THREE.BoxGeometry(.5,.46,.08),bumperMaterial);grille.position.set(0,.65,1.18);grille.castShadow=true;kart.add(grille)}
      const steering=new THREE.Mesh(new THREE.TorusGeometry(.21,.035,10,24),new THREE.MeshStandardMaterial({color:0x141817,metalness:.55,roughness:.32}));steering.position.set(0,1.02,.15);steering.rotation.x=-1.05;kart.add(steering);
-     [-.32,.32].forEach(x=>{const lamp=new THREE.Mesh(new THREE.SphereGeometry(.09,12,8),new THREE.MeshStandardMaterial({color:0xfff2c0,emissive:0xffd36a,emissiveIntensity:2.2,roughness:.12}));lamp.scale.z=.45;lamp.position.set(x,.52,1.17);kart.add(lamp)});
+     const lampGeometry=i===4||i===5?new THREE.BoxGeometry(.3,.1,.06):new THREE.SphereGeometry(.09,12,8);
+     [-.34,.34].forEach(x=>{const lamp=new THREE.Mesh(lampGeometry,new THREE.MeshStandardMaterial({color:0xfff2c0,emissive:0xffd36a,emissiveIntensity:2.2,roughness:.12}));if(!spec.boxy)lamp.scale.z=.45;lamp.position.set(x,spec.luxury?.78:.52,1.17);kart.add(lamp)});
      const contactShadow=new THREE.Mesh(new THREE.CircleGeometry(.92,28),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.28,depthWrite:false}));contactShadow.rotation.x=-Math.PI/2;contactShadow.scale.set(1,1.35,1);contactShadow.position.y=.055;kart.add(contactShadow);
      const exhaustMaterial=new THREE.MeshBasicMaterial({color:0x65f7ff,transparent:true,opacity:.9}),exhausts=[];
      [-.38,.38].forEach(x=>{const flame=new THREE.Mesh(new THREE.ConeGeometry(.11,.62,8),exhaustMaterial);flame.rotation.x=-Math.PI/2;flame.position.set(x,.34,-1.12);kart.add(flame);exhausts.push(flame)});
      const material=new THREE.SpriteMaterial({map:texture,transparent:true,alphaTest:.025,depthWrite:false});
-     const rider=new THREE.Sprite(material);rider.position.set(0,1.36,-.14);rider.scale.set(1.42,1.42,1);rider.renderOrder=5;kart.add(rider);
+     const rider=new THREE.Sprite(material);rider.position.set(0,spec.luxury?1.62:1.4,-.14);rider.scale.set(1.38,1.38,1);rider.renderOrder=5;kart.add(rider);
      kart.userData={wheels,exhausts};kart.visible=false;kart.renderOrder=4;scene.add(kart);
      GL.racers[i]=kart;GL.targets[i]=new THREE.Vector3();GL.targetRotations[i]=0
    });
@@ -196,7 +212,7 @@ function clear3DRacers(){GL.racers.forEach(r=>r.visible=false)}
 init3D();
 
 $("net").textContent="✅ 준비 완료 · 인터넷만 연결되어 있으면 다른 기기와 접속할 수 있습니다.";
-["p1","p2","p3"].forEach((id,n)=>$(id).innerHTML=`<option value="">${n+1}위 선택</option>`+A.map((a,i)=>`<option value="${i}">${a[0]}</option>`).join(""));
+["p1","p2","p3"].forEach((id,n)=>$(id).innerHTML=`<option value="">${n+1}위 선택</option>`+A.map((a,i)=>`<option value="${i}">${racerName(i)}</option>`).join(""));
 $("cn").value=localStorage.getItem("animal-gp-name")||"";
 $("jn").value=localStorage.getItem("animal-gp-name")||"";
 
@@ -396,8 +412,8 @@ function renderRace(r){
  A.forEach((a,i)=>{const x=r.progress.find(q=>q.i===i);setRacer3D(i,x?.v||0,i,r.order[0]===i)});
  const lead=A[r.order[0]],sec=A[r.order[1]],g=((r.progress.find(x=>x.i===r.order[0]).v-r.progress.find(x=>x.i===r.order[1]).v)*100).toFixed(1);
  const leadProgress=r.progress.find(x=>x.i===r.order[0]).v;
- $("comment").innerHTML=leadProgress>.75?`🔥 마지막 정글 구간! ${animalIcon(lead)} ${lead[0]} 선두`:`🌿 원랩 질주 · ${animalIcon(lead)} ${lead[0]} 선두 · ${animalIcon(sec)} ${sec[0]} 추격 · 격차 ${g}%`;
- $("board").innerHTML=r.order.map((i,k)=>{const v=r.progress.find(x=>x.i===i).v;return`<div class="rank"><b>${k+1}</b><div>${animalIcon(A[i])}${A[i][0]}<div class="bar"><i style="width:${v*100}%"></i></div></div><span>${Math.floor(v*1800)}m</span></div>`}).join("")
+ $("comment").innerHTML=leadProgress>.75?`🔥 마지막 정글 구간! ${animalIcon(lead)} ${racerName(r.order[0])} 선두`:`🌿 원랩 질주 · ${animalIcon(lead)} ${racerName(r.order[0])} 선두 · ${animalIcon(sec)} ${racerName(r.order[1])} 추격 · 격차 ${g}%`;
+ $("board").innerHTML=r.order.map((i,k)=>{const v=r.progress.find(x=>x.i===i).v;return`<div class="rank"><b>${k+1}</b><div>${animalIcon(A[i])}${racerName(i)}<div class="bar"><i style="width:${v*100}%"></i></div></div><span>${Math.floor(v*1800)}m</span></div>`}).join("")
 }
 function showResult(res){
  seenResult=res.version;$("overlay").classList.add("show");$("resultTitle").textContent=res.final?"🏆 최종 순위 발표":"🏁 경기 결과";$("next").textContent=host?(res.final?"새 게임 시작":"다음 경기"):"방장을 기다리는 중";$("next").disabled=!host;
@@ -407,7 +423,7 @@ function showResult(res){
    return
  }
  const sorted=[...res.rows].sort((a,b)=>b.score.exact-a.score.exact||b.points-a.points);
- $("result").innerHTML=`<p><b>실제 TOP3:</b> ${res.actual.slice(0,3).map((i,k)=>`${k+1}위 ${animalIcon(A[i])} ${A[i][0]}`).join(" · ")}</p><table><tr><th>순위</th><th>이름</th><th>정확 적중</th><th>점수</th><th>코인</th></tr>${sorted.map((r,i)=>`<tr class="${res.winnerIds.includes(r.id)?"win":""}"><td>${i+1}</td><td>${esc(r.name)}</td><td>${r.score.exact}</td><td>${r.points}</td><td>${res.winnerIds.includes(r.id)?`+${res.share}`:`-${r.bet}`}</td></tr>`).join("")}</table><div class="status">배수 ${res.mu}배 · 총 상금 ${res.prize}코인 · 우승자 1인당 ${res.share}코인</div>${res.newlyEliminated?.length?`<div class="penalty">💀 코인 0 탈락: ${state.players.filter(p=>res.newlyEliminated.includes(p.id)).map(p=>esc(p.name)).join(", ")}</div>`:""}`
+ $("result").innerHTML=`<p><b>실제 TOP3:</b> ${res.actual.slice(0,3).map((i,k)=>`${k+1}위 ${animalIcon(A[i])} ${racerName(i)}`).join(" · ")}</p><table><tr><th>순위</th><th>이름</th><th>정확 적중</th><th>점수</th><th>코인</th></tr>${sorted.map((r,i)=>`<tr class="${res.winnerIds.includes(r.id)?"win":""}"><td>${i+1}</td><td>${esc(r.name)}</td><td>${r.score.exact}</td><td>${r.points}</td><td>${res.winnerIds.includes(r.id)?`+${res.share}`:`-${r.bet}`}</td></tr>`).join("")}</table><div class="status">배수 ${res.mu}배 · 총 상금 ${res.prize}코인 · 우승자 1인당 ${res.share}코인</div>${res.newlyEliminated?.length?`<div class="penalty">💀 코인 0 탈락: ${state.players.filter(p=>res.newlyEliminated.includes(p.id)).map(p=>esc(p.name)).join(", ")}</div>`:""}`
 }
 </script>
 </body>
