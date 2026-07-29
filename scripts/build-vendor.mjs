@@ -1,16 +1,33 @@
 import { build } from "esbuild";
 
-await build({
-  stdin: {
-    contents: 'export { joinRoom } from "trystero";',
-    resolveDir: process.cwd(),
-    sourcefile: "trystero-entry.js",
-    loader: "js",
-  },
+const common = {
   bundle: true,
-  format: "esm",
+  format: "iife",
   platform: "browser",
-  target: ["es2022"],
+  target: ["es2020"],
   minify: true,
-  outfile: "public/assets/vendor/trystero.bundle.js",
-});
+};
+
+await Promise.all([
+  build({
+    ...common,
+    stdin: {
+      contents: 'import * as THREE from "three"; globalThis.THREE = THREE;',
+      resolveDir: process.cwd(),
+      sourcefile: "three-entry.js",
+      loader: "js",
+    },
+    outfile: "public/assets/vendor/three.bundle.js",
+  }),
+  build({
+    ...common,
+    stdin: {
+      contents:
+        'import { joinRoom } from "trystero"; globalThis.Trystero = { joinRoom };',
+      resolveDir: process.cwd(),
+      sourcefile: "trystero-entry.js",
+      loader: "js",
+    },
+    outfile: "public/assets/vendor/trystero.bundle.js",
+  }),
+]);

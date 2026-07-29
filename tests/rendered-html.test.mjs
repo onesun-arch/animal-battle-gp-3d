@@ -44,8 +44,11 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /joinRoom/);
   assert.match(game, /shareRoom/);
   assert.doesNotMatch(game, /esm\.sh\/trystero/);
+  assert.doesNotMatch(game, /<script type="module">/);
+  assert.match(game, /three\.bundle\.js/);
+  assert.match(game, /trystero\.bundle\.js/);
   await Promise.all([
-    access(new URL("../public/assets/vendor/three.module.min.js", import.meta.url)),
+    access(new URL("../public/assets/vendor/three.bundle.js", import.meta.url)),
     access(new URL("../public/assets/vendor/trystero.bundle.js", import.meta.url)),
     access(new URL("../public/assets/textures/grass-tile.jpg", import.meta.url)),
     access(new URL("../public/assets/textures/dirt-tile.jpg", import.meta.url)),
