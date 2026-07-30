@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>동물 레이싱 배틀 GP</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,"Noto Sans KR",sans-serif;background:#17251c url("./assets/amazon-race-arena.png") center/cover fixed;min-height:100vh;color:#183426}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,"Noto Sans KR",sans-serif;background:#17251c url("./assets/amazon-canyon-road-v3.png") center/cover fixed;min-height:100vh;color:#183426}
 body:before{content:"";position:fixed;inset:0;background:linear-gradient(135deg,#07130bd9,#12361f70 55%,#7045164d);backdrop-filter:blur(8px);z-index:-1}
 button,input,select{font:inherit}.hidden{display:none!important}.wrap{max-width:1300px;margin:auto;padding:12px}
 .panel{background:#fffffff0;border:1px solid #ffffff80;border-radius:22px;box-shadow:0 22px 70px #07130b70;backdrop-filter:blur(16px)}.lobby{max-width:650px;margin:7vh auto;padding:28px}
 h1,h2,h3{margin-top:0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0}.tabs button,.btn{border:0;border-radius:13px;padding:12px;font-weight:900;cursor:pointer}.tabs .active,.btn.primary{background:linear-gradient(135deg,#1d7e48,#d18b2e);color:white;box-shadow:0 8px 22px #225e3440}.btn.secondary{background:#edf3ef;color:#173f2b}.form{display:grid;gap:10px}.form input{width:100%;padding:12px;border:1px solid #bfd2c6;border-radius:11px;background:#ffffffdd}.notice{margin-top:13px;padding:11px;border-radius:12px;background:#edf7f0;font-size:13px;line-height:1.5}
 .top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;margin-bottom:10px}.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{padding:8px 10px;background:#fff;border:1px solid #d8e6ee;border-radius:11px;font-weight:900}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:11px}.racebox{padding:11px}.arena{height:690px;position:relative;overflow:hidden;border-radius:18px;background:#315c2d url("./assets/amazon-race-arena.png") center/cover no-repeat;box-shadow:inset 0 0 55px #1f120466,0 20px 55px #07130b55}.arena canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.arena:before{content:"";position:absolute;inset:-25%;pointer-events:none;z-index:2;opacity:0;background:repeating-conic-gradient(from 90deg at 50% 58%,#fff0 0 8deg,#dfffea2b 9deg 9.5deg,#fff0 10deg 18deg);transform:scale(1.2);transition:opacity .25s}.arena.racing:before{opacity:.42;animation:rush .22s linear infinite}.arena:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 58%,#120a0338);box-shadow:inset 0 0 90px #07130b99;z-index:1}@keyframes rush{to{transform:scale(1.48)}}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:11px}.racebox{padding:11px}.arena{height:690px;position:relative;overflow:hidden;border-radius:18px;background:#315c2d url("./assets/amazon-canyon-road-v3.png") center/cover no-repeat;box-shadow:inset 0 0 55px #1f120466,0 20px 55px #07130b55}.arena canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.arena:before{content:"";position:absolute;inset:-25%;pointer-events:none;z-index:2;opacity:0;background:repeating-conic-gradient(from 90deg at 50% 58%,#fff0 0 8deg,#dfffea2b 9deg 9.5deg,#fff0 10deg 18deg);transform:scale(1.2);transition:opacity .25s}.arena.racing:before{opacity:.32;animation:rush .22s linear infinite}.arena:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 58%,#090d0b52);box-shadow:inset 0 0 70px #07130b7a;z-index:1}@keyframes rush{to{transform:scale(1.48)}}
 .track{display:none}
 .center{position:absolute;left:50%;top:17%;transform:translate(-50%,-50%);width:min(72%,620px);display:grid;place-items:center;text-align:center;color:#fff;text-shadow:0 3px 12px #071b0d;z-index:3;pointer-events:none}.center h2{letter-spacing:.22em;margin-bottom:8px}.comment{background:#123c2cdd;padding:9px 14px;border:1px solid #ffffff38;border-radius:999px;font-weight:900;font-size:13px;box-shadow:0 8px 22px #0005}
 .lap{position:absolute;right:14px;top:14px;background:#10241ee8;color:#fff;padding:9px 12px;border-radius:12px;font-weight:1000;z-index:5}.racer{position:absolute;width:78px;height:78px;padding:4px;border-radius:50%;background:linear-gradient(145deg,#fff,#d9c295);border:3px solid var(--c);display:grid;place-items:center;transform:translate(-50%,-50%);transition:left .12s linear,top .12s linear;box-shadow:0 8px 18px #0008;z-index:4}.racer img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}.racer.lead{box-shadow:0 0 0 5px #ffd45c,0 9px 25px #0008;animation:pulse .45s ease-in-out infinite alternate}.racer.sprint{animation:shake .12s linear infinite}@keyframes pulse{to{transform:translate(-50%,-50%) scale(1.12)}}@keyframes shake{50%{margin-left:4px}}
@@ -102,23 +102,25 @@ async function init3D(){
    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:"high-performance"});
    renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
    renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
-   const scene=new THREE.Scene();scene.background=new THREE.Color(0x55745a);scene.fog=new THREE.Fog(0x55745a,18,40);
-   const camera=new THREE.PerspectiveCamera(58,1,.1,70);camera.position.set(9,5.4,11.5);camera.lookAt(0,.65,2.8);
+   const scene=new THREE.Scene();scene.background=new THREE.Color(0x56645b);scene.fog=new THREE.FogExp2(0x56645b,.034);
+   const camera=new THREE.PerspectiveCamera(64,1,.1,70);camera.position.set(0,1.8,0);
    scene.add(new THREE.HemisphereLight(0xe8f5dc,0x243718,2.5));
    const sun=new THREE.DirectionalLight(0xffd38a,4.4);sun.position.set(-9,14,7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-22;sun.shadow.camera.right=22;sun.shadow.camera.top=18;sun.shadow.camera.bottom=-18;scene.add(sun);
    const skyFill=new THREE.DirectionalLight(0x9ed7ff,1.1);skyFill.position.set(10,8,-12);scene.add(skyFill);
    const loader=new THREE.TextureLoader();
-   const [jungle,grass,dirt,...animals]=await Promise.all([
-     loader.loadAsync("./assets/amazon-race-arena.png"),
+   const [jungle,grass,dirt,asphalt,...animals]=await Promise.all([
+     loader.loadAsync("./assets/amazon-canyon-road-v3.png"),
      loader.loadAsync("./assets/textures/grass-tile.jpg"),
      loader.loadAsync("./assets/textures/dirt-tile.jpg"),
+     loader.loadAsync("./assets/textures/wet-asphalt-v2.png"),
      ...A.map(a=>loader.loadAsync(a[1]))
    ]);
-   [jungle,grass,dirt,...animals].forEach(t=>t.colorSpace=THREE.SRGBColorSpace);
-   jungle.mapping=THREE.EquirectangularReflectionMapping;scene.background=jungle;scene.environment=jungle;scene.backgroundBlurriness=.04;scene.fog.color.set(0x55745a);
-   const maxAnisotropy=renderer.capabilities.getMaxAnisotropy();grass.anisotropy=dirt.anisotropy=maxAnisotropy;
+   [jungle,grass,dirt,asphalt,...animals].forEach(t=>t.colorSpace=THREE.SRGBColorSpace);
+   jungle.mapping=THREE.EquirectangularReflectionMapping;scene.background=jungle;scene.environment=jungle;scene.backgroundBlurriness=0;
+   const maxAnisotropy=renderer.capabilities.getMaxAnisotropy();grass.anisotropy=dirt.anisotropy=asphalt.anisotropy=maxAnisotropy;
    grass.wrapS=grass.wrapT=THREE.RepeatWrapping;grass.repeat.set(7,5);
    dirt.wrapS=dirt.wrapT=THREE.RepeatWrapping;dirt.repeat.set(5,3);
+   asphalt.wrapS=asphalt.wrapT=THREE.RepeatWrapping;asphalt.repeat.set(2,18);
    const ground=new THREE.Mesh(new THREE.PlaneGeometry(38,25),new THREE.MeshStandardMaterial({map:grass,roughness:1,color:0x678e44}));
    ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
    const trackCurve=new THREE.CatmullRomCurve3([
@@ -128,30 +130,25 @@ async function init3D(){
      new THREE.Vector3(-15,.45,2)
    ],true,"catmullrom",.42);
    GL.trackCurve=trackCurve;
-   const track=new THREE.Mesh(ribbonGeometry(trackCurve,5.8),new THREE.MeshStandardMaterial({map:dirt,roughness:.94,color:0xc47a3d}));
+   const track=new THREE.Mesh(ribbonGeometry(trackCurve,5.8),new THREE.MeshPhysicalMaterial({map:asphalt,roughness:.38,metalness:.05,clearcoat:.32,clearcoatRoughness:.22,color:0x8e9290}));
    track.position.y=.045;track.receiveShadow=true;scene.add(track);
-   const curbMaterial=new THREE.MeshStandardMaterial({color:0xf1ca5b,roughness:.7});
-   [-3,3].forEach(offset=>{const curb=new THREE.Mesh(new THREE.TubeGeometry(offsetCurve(trackCurve,offset),300,.14,8,true),curbMaterial);curb.position.y=.1;curb.castShadow=true;scene.add(curb)});
-   const centerLine=new THREE.Mesh(new THREE.TubeGeometry(trackCurve,340,.035,6,true),new THREE.MeshBasicMaterial({color:0xffefad,transparent:true,opacity:.72}));
-   centerLine.position.y=.12;scene.add(centerLine);
-   const river=new THREE.Mesh(new THREE.PlaneGeometry(9.8,1.15),new THREE.MeshStandardMaterial({color:0x258cb4,metalness:.25,roughness:.18,transparent:true,opacity:.88}));
-   river.rotation.x=-Math.PI/2;river.position.set(0,.085,0);scene.add(river);
-   const boostMaterial=new THREE.MeshStandardMaterial({color:0x27e4cf,emissive:0x087c72,emissiveIntensity:1.7,metalness:.25,roughness:.3});
-   [.14,.48,.78].forEach(u=>{const p=trackCurve.getPointAt(u),tangent=trackCurve.getTangentAt(u),pad=new THREE.Mesh(new THREE.BoxGeometry(4.5,.045,1.25),boostMaterial);pad.position.copy(p);pad.position.y+=.13;pad.rotation.y=Math.atan2(tangent.x,tangent.z);scene.add(pad)});
-   const trunkGeometry=new THREE.CylinderGeometry(.28,.48,3.8,10);
-   const trunkMaterial=new THREE.MeshStandardMaterial({color:0x5b371e,roughness:1});
-   const leafGeometry=new THREE.IcosahedronGeometry(1.35,1);
-   const leafMaterial=new THREE.MeshStandardMaterial({color:0x145f35,roughness:.9});
-   [[-15.5,7,1.45],[15.5,7,1.45],[-16,0,1.7],[16,0,1.7],[-15,-7,1.55],[15,-7,1.55],[-4.5,1.7,1.05],[4.5,-1.7,1.05]].forEach(([x,z,s],i)=>{
-     const trunk=new THREE.Mesh(trunkGeometry,trunkMaterial);trunk.position.set(x,1.9*s,z);trunk.scale.setScalar(s);trunk.castShadow=true;scene.add(trunk);
-     for(let n=0;n<3;n++){const leaf=new THREE.Mesh(leafGeometry,leafMaterial);leaf.position.set(x+(n-1)*.9*s,4.4*s+Math.abs(n-1)*.25,z+(i%2?.35:-.35));leaf.scale.set(1.25*s,.78*s,1.1*s);leaf.castShadow=true;scene.add(leaf)}
+   const edgePaint=new THREE.MeshStandardMaterial({color:0xf2eee0,roughness:.58,metalness:.02});
+   [-2.72,2.72].forEach(offset=>{const line=new THREE.Mesh(new THREE.TubeGeometry(offsetCurve(trackCurve,offset),320,.035,6,true),edgePaint);line.position.y=.13;scene.add(line)});
+   const railMaterial=new THREE.MeshStandardMaterial({color:0xb7bec0,metalness:.88,roughness:.26});
+   [-3.22,3.22].forEach(offset=>{
+     [.42,.68].forEach(height=>{const rail=new THREE.Mesh(new THREE.TubeGeometry(offsetCurve(trackCurve,offset),320,.065,10,true),railMaterial);rail.position.y=height;rail.castShadow=true;scene.add(rail)});
+     for(let n=0;n<40;n++){const u=n/40,p=trackCurve.getPointAt(u),tangent=trackCurve.getTangentAt(u).normalize(),side=new THREE.Vector3(-tangent.z,0,tangent.x).normalize(),post=new THREE.Mesh(new THREE.CylinderGeometry(.045,.055,.78,8),railMaterial);post.position.copy(p).addScaledVector(side,offset);post.position.y+=.38;post.castShadow=true;scene.add(post)}
    });
-   const rockMaterial=new THREE.MeshStandardMaterial({color:0x57625a,roughness:.96});
-   [[-14,3,.8],[14,-3,1],[-9.5,-8,.75],[9.5,8,.9],[-4.8,-1.8,.55],[4.9,1.7,.6]].forEach(([x,z,s])=>{const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),rockMaterial);rock.position.set(x,s*.55,z);rock.scale.y=.7;rock.rotation.set(.2,x*.1,.12);rock.castShadow=true;scene.add(rock)});
-   const archMaterial=new THREE.MeshStandardMaterial({color:0x68411f,roughness:.82});
+   const boostMaterial=new THREE.MeshStandardMaterial({color:0x7ee7dc,emissive:0x0d746d,emissiveIntensity:.75,metalness:.15,roughness:.42});
+   [.14,.48,.78].forEach(u=>{const p=trackCurve.getPointAt(u),tangent=trackCurve.getTangentAt(u),pad=new THREE.Mesh(new THREE.BoxGeometry(4.5,.025,.42),boostMaterial);pad.position.copy(p);pad.position.y+=.14;pad.rotation.y=Math.atan2(tangent.x,tangent.z);scene.add(pad)});
+   const tunnelMaterial=new THREE.MeshStandardMaterial({map:dirt,color:0x455148,roughness:1});
+   const tunnelU=.61,tunnelPoint=trackCurve.getPointAt(tunnelU),tunnelTangent=trackCurve.getTangentAt(tunnelU).normalize(),tunnelSide=new THREE.Vector3(-tunnelTangent.z,0,tunnelTangent.x).normalize(),tunnelAngle=Math.atan2(tunnelTangent.x,tunnelTangent.z);
+   [-1,1].forEach(sign=>{const wall=new THREE.Mesh(new THREE.BoxGeometry(1.1,3.2,1.6),tunnelMaterial);wall.position.copy(tunnelPoint).addScaledVector(tunnelSide,sign*3.05);wall.position.y+=1.55;wall.rotation.y=tunnelAngle;wall.castShadow=true;scene.add(wall)});
+   const tunnelArch=new THREE.Mesh(new THREE.TorusGeometry(3.05,.46,16,48,Math.PI),tunnelMaterial);tunnelArch.position.copy(tunnelPoint);tunnelArch.position.y+=3.1;tunnelArch.rotation.y=tunnelAngle;tunnelArch.castShadow=true;scene.add(tunnelArch);
+   const archMaterial=new THREE.MeshStandardMaterial({color:0x20292c,metalness:.78,roughness:.32});
    const startPoint=trackCurve.getPointAt(0),startTangent=trackCurve.getTangentAt(0).normalize(),startSide=new THREE.Vector3(-startTangent.z,0,startTangent.x).normalize();
-   [-1,1].forEach(sign=>{const pillar=new THREE.Mesh(new THREE.CylinderGeometry(.25,.38,4.8,10),archMaterial);pillar.position.copy(startPoint).addScaledVector(startSide,sign*3.25);pillar.position.y+=2.4;pillar.castShadow=true;scene.add(pillar)});
-   const arch=new THREE.Mesh(new THREE.BoxGeometry(6.7,.48,.55),archMaterial);arch.position.copy(startPoint);arch.position.y+=4.7;arch.rotation.y=Math.atan2(-startSide.z,startSide.x);arch.castShadow=true;scene.add(arch);
+   [-1,1].forEach(sign=>{const pillar=new THREE.Mesh(new THREE.BoxGeometry(.22,4.8,.22),archMaterial);pillar.position.copy(startPoint).addScaledVector(startSide,sign*3.25);pillar.position.y+=2.4;pillar.castShadow=true;scene.add(pillar)});
+   const arch=new THREE.Mesh(new THREE.BoxGeometry(6.7,.28,.28),archMaterial);arch.position.copy(startPoint);arch.position.y+=4.7;arch.rotation.y=Math.atan2(-startSide.z,startSide.x);arch.castShadow=true;scene.add(arch);
    animals.forEach((texture,i)=>{
      const spec=CARS[i],kart=new THREE.Group(),paint=new THREE.Color(spec.color),bodyMaterial=new THREE.MeshPhysicalMaterial({color:paint,metalness:.64,roughness:.2,clearcoat:1,clearcoatRoughness:.12});
      const bodyGeometry=spec.boxy?new THREE.BoxGeometry(1.6,.52,2.08,3,2,4):new THREE.SphereGeometry(1,28,14);
@@ -182,16 +179,18 @@ async function init3D(){
    });
    GL.renderer=renderer;GL.scene=scene;GL.camera=camera;GL.ready=true;
    if(state?.race)renderRace(state.race);else showStartingGrid();
-   const resize=()=>{const w=Math.max(1,arena.clientWidth),h=Math.max(1,arena.clientHeight),portrait=w/h<.95;renderer.setSize(w,h,false);camera.aspect=w/h;camera.userData.baseFov=portrait?72:58;camera.fov=camera.userData.baseFov;camera.updateProjectionMatrix()};
+   const resize=()=>{const w=Math.max(1,arena.clientWidth),h=Math.max(1,arena.clientHeight),portrait=w/h<.95;renderer.setSize(w,h,false);camera.aspect=w/h;camera.userData.baseFov=portrait?74:64;camera.fov=camera.userData.baseFov;camera.updateProjectionMatrix()};
    new ResizeObserver(resize).observe(arena);resize();
    renderer.setAnimationLoop(time=>{
      GL.racers.forEach((kart,i)=>{if(!kart.visible)return;kart.position.lerp(GL.targets[i],.28);kart.position.y=GL.targets[i].y+Math.sin(time*.018+i)*.035;const delta=Math.atan2(Math.sin(GL.targetRotations[i]-kart.rotation.y),Math.cos(GL.targetRotations[i]-kart.rotation.y));kart.rotation.y+=delta*.24;kart.rotation.z=THREE.MathUtils.lerp(kart.rotation.z,-delta*.32,.15);kart.userData.wheels?.forEach(w=>w.rotation.x-=.52);kart.userData.exhausts?.forEach((flame,n)=>{flame.visible=!!state?.running;flame.scale.set(1,1,.65+Math.sin(time*.035+n)*.32)})});
      if(state?.running&&state.race){
        const leaderIndex=state.race.order?.[0]??0,leader=GL.racers[leaderIndex],target=GL.targets[leaderIndex],angle=GL.targetRotations[leaderIndex],dx=Math.sin(angle),dz=Math.cos(angle);
-       const shake=Math.sin(time*.045)*.045,desired=new THREE.Vector3(target.x-dx*4.8+shake,3.65+Math.abs(shake),target.z-dz*4.8);camera.position.lerp(desired,.1);
-       camera.lookAt(target.x+dx*3.2,target.y+.75,target.z+dz*3.2)
-     }else{camera.position.lerp(new THREE.Vector3(9,5.4,11.5),.055);camera.lookAt(0,.7,2.8)}
-     const targetFov=(camera.userData.baseFov||58)+(state?.running?10:0);if(Math.abs(camera.fov-targetFov)>.02){camera.fov=THREE.MathUtils.lerp(camera.fov,targetFov,.08);camera.updateProjectionMatrix()}
+       const shake=Math.sin(time*.05)*.035,desired=new THREE.Vector3(target.x-dx*3.25+shake,target.y+1.55+Math.abs(shake),target.z-dz*3.25);camera.position.lerp(desired,.14);
+       camera.lookAt(target.x+dx*6.4,target.y+.52,target.z+dz*6.4)
+     }else{
+       const u=.955,p=trackCurve.getPointAt(u),tangent=trackCurve.getTangentAt(u).normalize(),desired=p.clone().addScaledVector(tangent,-3.5);desired.y+=1.75;camera.position.lerp(desired,.1);camera.lookAt(p.x+tangent.x*5.2,p.y+.55,p.z+tangent.z*5.2)
+     }
+     const targetFov=(camera.userData.baseFov||64)+(state?.running?8:0);if(Math.abs(camera.fov-targetFov)>.02){camera.fov=THREE.MathUtils.lerp(camera.fov,targetFov,.08);camera.updateProjectionMatrix()}
      renderer.render(scene,camera)
    });
  }catch(error){

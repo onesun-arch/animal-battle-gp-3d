@@ -39,7 +39,7 @@ test("ships the WebGL game and local textures", async () => {
   const game = await readFile(new URL("../public/game.html", import.meta.url), "utf8");
   assert.match(game, /new THREE\.WebGLRenderer/);
   assert.match(game, /powerPreference:"high-performance"/);
-  assert.match(game, /new THREE\.PerspectiveCamera\(58/);
+  assert.match(game, /new THREE\.PerspectiveCamera\(64/);
   assert.match(game, /function showStartingGrid/);
   assert.match(game, /6마리 모두 1,800m 정글 원랩/);
   assert.match(game, /kart=new THREE\.Group/);
@@ -55,7 +55,11 @@ test("ships the WebGL game and local textures", async () => {
   assert.match(game, /classList\.toggle\("racing"/);
   assert.match(game, /grass-tile\.jpg/);
   assert.match(game, /dirt-tile\.jpg/);
-  assert.match(game, /amazon-race-arena\.png/);
+  assert.match(game, /amazon-canyon-road-v3\.png/);
+  assert.match(game, /wet-asphalt-v2\.png/);
+  assert.match(game, /new THREE\.FogExp2/);
+  assert.match(game, /target\.y\+1\.55/);
+  assert.doesNotMatch(game, /trunkGeometry|leafGeometry|DodecahedronGeometry/);
   assert.match(game, /photoreal-characters-v2\/rabbit\.png/);
   assert.match(game, /new THREE\.MeshPhysicalMaterial/);
   assert.match(game, /scene\.environment=jungle/);
